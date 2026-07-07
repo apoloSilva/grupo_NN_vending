@@ -1,0 +1,21 @@
+# Igora tudo, com exeção dos arquivos .gitignore, Makefile, relatório.pdf, README.md, e os arquivos pastas rtl, sim e synth
+*
+!.gitignore
+
+!Makefile
+# !relatorio.pdf
+!README.md
+
+!rtl/
+!rtl/**
+
+!sim/
+!sim/**
+
+!synth/
+!synth/synth.tcl
+!synth/vending.sdc
+
+# Mantém a pasta reports vazia no Git
+!synth/reports/
+!synth/reports/.gitkeep
