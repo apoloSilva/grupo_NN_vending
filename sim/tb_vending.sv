@@ -403,8 +403,8 @@ module tb_vending;
     // ------------------------------------------------------
     initial begin : MAIN_TEST
 
-        $dumpfile("vending.vcd");
-        $dumpvars(0, tb_vending);
+        $fsdbDumpfile("waves.fsdb");
+        $fsdbDumpvars(0, tb_vending);
 
         clk      = 1'b0;
         nrst     = 1'b0;
@@ -416,7 +416,7 @@ module tb_vending;
         checks   = 0;
         failures = 0;
 
-        reset_dut();
+        reset_dut(); // verifica o reset
 
         $display("============================================================");
 
