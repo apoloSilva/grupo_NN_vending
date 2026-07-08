@@ -54,6 +54,8 @@ module tb_vending;
         $fsdbDumpfile("waves.fsdb");
         $fsdbDumpvars(0, tb_vending);
 
+        $timeformat(-9, 3, " ns", 10);
+
         clk      = 1'b0;
         rst      = 1'b1;
         coin_in  = 2'b00;
@@ -64,6 +66,7 @@ module tb_vending;
         checks   = 0;
         failures = 0;
 
+        // Executa todos os cenários definidos nos blocos "initial begin ... end" até done_s4 é assinalado
         #1ps;
         -> start_s1;
 
@@ -99,8 +102,13 @@ module tb_vending;
 
         check_state(ST_IDLE, state_out, "Reset: FSM inicia em IDLE");
         check(8'd0, display, "Reset: credito inicial igual a zero");
-
+        $display("[TIME] Apos reset inicial: %0t", $time);
+        
+        // ----------------------------------------------------------
+        // Execução do cenário 1
+        // ----------------------------------------------------------
         scenario_1_success_with_change();
+        $display("[TIME] Apos cenario 1: %0t", $time);
 
         -> done_s1;
     end
@@ -110,6 +118,7 @@ module tb_vending;
         @done_s1;
 
         scenario_2_insufficient_credit();
+        $display("[TIME] Apos cenario 2: %0t", $time);
 
         -> done_s2;
     end
@@ -119,6 +128,7 @@ module tb_vending;
         @done_s2;
 
         scenario_3_cancel();
+        $display("[TIME] Apos cenario 3: %0t", $time);
 
         -> done_s3;
     end
@@ -128,6 +138,7 @@ module tb_vending;
         @done_s3;
 
         scenario_4_zero_stock();
+        $display("[TIME] Apos cenario 4: %0t", $time);
 
         -> done_s4;
     end
