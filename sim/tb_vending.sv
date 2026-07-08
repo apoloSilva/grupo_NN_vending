@@ -1,3 +1,4 @@
+
 module tb_vending;
 
     import vending_pkg::*;
@@ -19,6 +20,12 @@ module tb_vending;
     int unsigned checks;
     int unsigned failures;
     int scenario;
+
+    event start_s1;
+    event done_s1;
+    event done_s2;
+    event done_s3;
+    event done_s4;
 
     // DUT
     vending_top dut (
@@ -44,7 +51,7 @@ module tb_vending;
 
     initial begin : MAIN_TEST
 
-         // 8.2.6 Geração de waveform
+        // 8.2.6 Geração de waveform
         $fsdbDumpfile("waves.fsdb");
         $fsdbDumpvars(0, tb_vending);
 
@@ -58,67 +65,10 @@ module tb_vending;
         checks   = 0;
         failures = 0;
 
-	// ----------------------------------------------------------
-	// Reset inicial por 2 ciclos de clock (8.2.2)
-	// ----------------------------------------------------------
-        $display("\nReset inicial por 2 ciclos de clock");
-           reset_dut();
-	   check_state(ST_IDLE, state_out, "Reset: FSM inicia em IDLE");
-	   check(8'd0, display, "Reset: credito inicial igual a zero");
+        #1ps;
+        -> start_s1;
 
-	// ----------------------------------------------------------
-	// Teste individual da tarefa apply_coin(value) (8.2.3)
-	// ----------------------------------------------------------
-        $display("\nTeste individual da tarefa apply_coin(value)");
-	   apply_coin(2'b01);
-	   check({6'd0, 2'b00}, {6'd0, coin_in}, "apply_coin: coin_in retorna para 00");
-           wait_for_state(ST_COLLECT, "apply_coin: FSM vai para COLLECT");
-           check(8'd25, display, "apply_coin: credito acumulado = 25"); // verifica se o credito no display é 25
-
-	   apply_coin(2'b10);
-	   check({6'd0, 2'b00}, {6'd0, coin_in}, "apply_coin: coin_in retorna para 00");
-           wait_for_state(ST_COLLECT, "apply_coin: FSM fica em COLLECT");
-           check(8'd75, display, "apply_coin: credito acumulado = 75"); // verifica se o credito no display é 75
-
-	// ------------------------------------------------------
-	// Cancelamento básico apenas para zerar o crédito
-	// antes do teste de buy_item()
-	// ------------------------------------------------------
-        $display("");
-	press_cancel();
-	wait_for_state(ST_IDLE, "cancel: FSM retorna para IDLE antes de buy_item");
-	check(8'd0, display, "cancel: credito zerado antes de buy_item");
-
-	// ----------------------------------------------------------
-	// Teste individual da tarefa buy_item(item, coins[]) (8.2.4)
-	// ----------------------------------------------------------
-	$display("\nTeste individual da tarefa buy_item(item, coins[])");
-
-	begin
-	    logic [1:0] coins[]; // array dinamico
-
-	    // 25 + 50 + 25 = 100 centavos
-	    coins = new[3];
-	    coins[0] = 2'b01; // R$0,25
-	    coins[1] = 2'b10; // R$0,50
-	    coins[2] = 2'b01; // R$0,25
-
-	    buy_item(2'd0, coins); // item 0 = café
-
-	    wait_for_state(ST_DISPENSE, "buy_item: FSM entra em DISPENSE");
-	    check_bit(1'b1, dispense, "buy_item: dispense ativo");
-	    wait_for_state(ST_CHANGE, "buy_item: FSM entra em CHANGE");
-	    check(8'd75, change_out, "buy_item: troco = 75");
-	    wait_for_state(ST_IDLE, "buy_item: FSM retorna para IDLE");
-	    check(8'd0, display, "buy_item: credito zerado ao final");
-	end
-
-
-	scenario_1_success_with_change();
-	scenario_2_insufficient_credit();
-	scenario_3_cancel();
-	scenario_4_zero_stock();
-
+        @done_s4;
 
         $display("\n============================================================");
 
@@ -136,6 +86,78 @@ module tb_vending;
 
         #10;
         $finish;
+    end
+
+    initial begin : TEST_SCENARIO_1
+
+        @start_s1;
+
+        // ----------------------------------------------------------
+        // Reset inicial por 2 ciclos de clock
+        // ----------------------------------------------------------
+        $display("\nReset inicial por 2 ciclos de clock");
+        reset_dut();
+
+        check_state(ST_IDLE, state_out, "Reset: FSM inicia em IDLE");
+        check(8'd0, display, "Reset: credito inicial igual a zero");
+
+        scenario_1_success_with_change();
+
+        -> done_s1;
+    end
+
+    initial begin : TEST_SCENARIO_2
+
+        @done_s1;
+
+        // ----------------------------------------------------------
+        // Reset inicial por 2 ciclos de clock
+        // ----------------------------------------------------------
+        $display("\nReset inicial por 2 ciclos de clock");
+        reset_dut();
+
+        check_state(ST_IDLE, state_out, "Reset: FSM inicia em IDLE");
+        check(8'd0, display, "Reset: credito inicial igual a zero");
+
+        scenario_2_insufficient_credit();
+
+        -> done_s2;
+    end
+
+    initial begin : TEST_SCENARIO_3
+
+        @done_s2;
+
+        // ----------------------------------------------------------
+        // Reset inicial por 2 ciclos de clock
+        // ----------------------------------------------------------
+        $display("\nReset inicial por 2 ciclos de clock");
+        reset_dut();
+
+        check_state(ST_IDLE, state_out, "Reset: FSM inicia em IDLE");
+        check(8'd0, display, "Reset: credito inicial igual a zero");
+
+        scenario_3_cancel();
+
+        -> done_s3;
+    end
+
+    initial begin : TEST_SCENARIO_4
+
+        @done_s3;
+
+        // ----------------------------------------------------------
+        // Reset inicial por 2 ciclos de clock
+        // ----------------------------------------------------------
+        $display("\nReset inicial por 2 ciclos de clock");
+        reset_dut();
+
+        check_state(ST_IDLE, state_out, "Reset: FSM inicia em IDLE");
+        check(8'd0, display, "Reset: credito inicial igual a zero");
+
+        scenario_4_zero_stock();
+
+        -> done_s4;
     end
 
     // Timeout global
@@ -281,185 +303,172 @@ module tb_vending;
         input string  label
     );
         int unsigned timeout_count;
+        logic [2:0] expected_code;
 
         begin
             timeout_count = 0;
+            expected_code = expected_state;
 
-            while ((state_out !== expected_state) &&
+            while ((state_out !== expected_code) &&
                    (timeout_count < 20)) begin
                 @(posedge clk);
                 #1ps;
                 timeout_count++;
             end
 
-            check_state(expected_state, state_out, label);
+            check_state(expected_code, state_out, label);
         end
     endtask
-
 
     // ======================================================
     // DEFINIÇÃO DE CENÁRIOS
     // ======================================================
 
-	// ======================================================
-	// CENÁRIO 1
-	// Compra bem-sucedida de café com troco
-	// ======================================================
-	task automatic scenario_1_success_with_change;
-	logic [1:0] coins[];
-	   begin
-		coins = new[1];
-		coins[0] = 2'b11; // R$1,00
+    // ======================================================
+    // CENÁRIO 1
+    // Compra bem-sucedida de café com troco
+    // ======================================================
+    task automatic scenario_1_success_with_change;
+        logic [1:0] coins[];
 
-		$display("\n============================================================");
-		$display("CENARIO 1: compra de cafe com troco");
-		$display("============================================================");
+        begin
+            coins = new[1];
+            coins[0] = 2'b11; // R$1,00
 
-		buy_item(2'd0, coins); // Café: R$0,25
+            $display("\n============================================================");
+            $display("CENARIO 1: compra de cafe com troco");
+            $display("============================================================");
 
-		wait_for_state(ST_DISPENSE,
-		               "S1: FSM entra em DISPENSE");
+            buy_item(2'd0, coins); // Café: R$0,25
+            wait_for_state(ST_DISPENSE, "S1: FSM entra em DISPENSE");
+            check_bit(1'b1, dispense, "S1: dispense ativo em DISPENSE");
+            wait_for_state(ST_CHANGE, "S1: FSM entra em CHANGE");
+            check_bit(1'b0, dispense, "S1: dispense dura apenas um ciclo");
+            check(8'd75, change_out, "S1: troco igual a 75 centavos");
+            wait_for_state(ST_IDLE, "S1: FSM retorna para IDLE");
+            check(8'd0, display, "S1: credito zerado ao final da venda");
+        end
+    endtask
 
-		check_bit(1'b1, dispense,
-		          "S1: dispense ativo em DISPENSE");
+    // ======================================================
+    // CENÁRIO 2
+    // Crédito insuficiente para comprar snack
+    // ======================================================
+    task automatic scenario_2_insufficient_credit;
+        logic [1:0] coins[];
 
-		wait_for_state(ST_CHANGE,
-		               "S1: FSM entra em CHANGE");
+        begin
+            coins = new[1];
+            coins[0] = 2'b01; // R$0,25
 
-		check_bit(1'b0, dispense,
-		          "S1: dispense dura apenas um ciclo");
+            $display("\n============================================================");
+            $display("CENARIO 2: credito insuficiente");
+            $display("============================================================");
 
-		check(8'd75, change_out,
-		      "S1: troco igual a 75 centavos");
+            buy_item(2'd3, coins); // Snack: R$1,00
 
-		wait_for_state(ST_IDLE,
-		               "S1: FSM retorna para IDLE");
+            wait_for_state(ST_ERROR,
+                           "S2: FSM entra em ERROR");
 
-		check(8'd0, display,
-		      "S1: credito zerado ao final da venda");
-	    end
-	endtask
+            check_bit(1'b1, error,
+                      "S2: error permanece ativo");
 
-	// ======================================================
-	// CENÁRIO 2
-	// Crédito insuficiente para comprar snack
-	// ======================================================
-	task automatic scenario_2_insufficient_credit;
-	    logic [1:0] coins[];
+            press_cancel();
 
-	    begin
-		coins = new[1];
-		coins[0] = 2'b01; // R$0,25
+            wait_for_state(ST_IDLE,
+                           "S2: cancel retorna para IDLE");
 
-		$display("\n============================================================");
-		$display("CENARIO 2: credito insuficiente");
-		$display("============================================================");
+            check(8'd25, change_out,
+                  "S2: cancel devolve 25 centavos");
 
-		buy_item(2'd3, coins); // Snack: R$1,00
+            check(8'd0, display,
+                  "S2: credito zerado apos cancelamento");
+        end
+    endtask
 
-		wait_for_state(ST_ERROR,
-		               "S2: FSM entra em ERROR");
+    // ======================================================
+    // CENÁRIO 3
+    // Cancelamento com R$2,00 acumulados
+    // ======================================================
+    task automatic scenario_3_cancel;
+        begin
+            $display("\n============================================================");
+            $display("CENARIO 3: cancelamento com R$2,00");
+            $display("============================================================");
 
-		check_bit(1'b1, error,
-		          "S2: error permanece ativo");
+            apply_coin(2'b11); // R$1,00
+            apply_coin(2'b11); // R$1,00
+            check(8'd200, display, "S3: credito acumulado igual a 200");
+            press_cancel();
+            wait_for_state(ST_IDLE, "S3: FSM retorna para IDLE");
+            check(8'd200, change_out, "S3: cancel devolve 200 centavos");
+            check(8'd0, display, "S3: credito zerado apos cancelamento");
+        end
+    endtask
 
-		press_cancel();
+    // ======================================================
+    // CENÁRIO 4
+    // Estoque zerado: vende 5 cafes e tenta a sexta compra
+    // ======================================================
+    task automatic scenario_4_zero_stock;
+        logic [1:0] coins[];
+        int i;
 
-		wait_for_state(ST_IDLE,
-		               "S2: cancel retorna para IDLE");
+        begin
+            coins = new[1];
+            coins[0] = 2'b11; // R$1,00
 
-		check(8'd25, change_out,
-		      "S2: cancel devolve 25 centavos");
+            $display("\n============================================================");
+            $display("CENARIO 4: estoque de cafe zerado");
+            $display("============================================================");
 
-		check(8'd0, display,
-		      "S2: credito zerado apos cancelamento");
-	    end
-	endtask
+            // Cinco compras bem-sucedidas: estoque inicial do café = 5.
+            for (i = 1; i <= 5; i++) begin
+                buy_item(2'd0, coins);
 
-	// ======================================================
-	// CENÁRIO 3
-	// Cancelamento com R$2,00 acumulados
-	// ======================================================
-	task automatic scenario_3_cancel;
-	    begin
-		$display("\n============================================================");
-		$display("CENARIO 3: cancelamento com R$2,00");
-		$display("============================================================");
+                wait_for_state(
+                    ST_DISPENSE,
+                    $sformatf("S4: venda %0d entra em DISPENSE", i)
+                );
 
-		apply_coin(2'b11); // R$1,00
-		apply_coin(2'b11); // R$1,00
-		check(8'd200, display, "S3: credito acumulado igual a 200");
-		press_cancel();
-		wait_for_state(ST_IDLE, "S3: FSM retorna para IDLE");
-		check(8'd200, change_out, "S3: cancel devolve 200 centavos");
-		check(8'd0, display, "S3: credito zerado apos cancelamento");
-	    end
-	endtask
+                check_bit(
+                    1'b1,
+                    dispense,
+                    $sformatf("S4: venda %0d gera dispense", i)
+                );
 
-	// ======================================================
-	// CENÁRIO 4
-	// Estoque zerado: vende 5 cafes e tenta a sexta compra
-	// ======================================================
-	task automatic scenario_4_zero_stock;
-	    logic [1:0] coins[];
-	    int i;
+                wait_for_state(
+                    ST_CHANGE,
+                    $sformatf("S4: venda %0d entra em CHANGE", i)
+                );
 
-	    begin
-		coins = new[1];
-		coins[0] = 2'b11; // R$1,00
+                check(
+                    8'd75,
+                    change_out,
+                    $sformatf("S4: venda %0d devolve 75 centavos", i)
+                );
 
-		$display("\n============================================================");
-		$display("CENARIO 4: estoque de cafe zerado");
-		$display("============================================================");
+                wait_for_state(
+                    ST_IDLE,
+                    $sformatf("S4: venda %0d retorna para IDLE", i)
+                );
+            end
 
-		// Cinco compras bem-sucedidas: estoque inicial do café = 5.
-		for (i = 1; i <= 5; i++) begin
-		    buy_item(2'd0, coins);
+            // Sexta tentativa: estoque já é zero.
+            buy_item(2'd0, coins);
 
-		    wait_for_state(
-		        ST_DISPENSE,
-		        $sformatf("S4: venda %0d entra em DISPENSE", i)
-		    );
+            wait_for_state(
+                ST_ERROR,
+                "S4: sexta tentativa entra em ERROR"
+            );
 
-		    check_bit(
-		        1'b1,
-		        dispense,
-		        $sformatf("S4: venda %0d gera dispense", i)
-		    );
-
-		    wait_for_state(
-		        ST_CHANGE,
-		        $sformatf("S4: venda %0d entra em CHANGE", i)
-		    );
-
-		    check(
-		        8'd75,
-		        change_out,
-		        $sformatf("S4: venda %0d devolve 75 centavos", i)
-		    );
-
-		    wait_for_state(
-		        ST_IDLE,
-		        $sformatf("S4: venda %0d retorna para IDLE", i)
-		    );
-		end
-
-		// Sexta tentativa: estoque já é zero.
-		buy_item(2'd0, coins);
-
-		wait_for_state(
-		    ST_ERROR,
-		    "S4: sexta tentativa entra em ERROR"
-		);
-
-		check_bit(
-		    1'b1,
-		    error,
-		    "S4: error ativo pois o estoque esta zerado"
-		);
-	    end
-	endtask
-
+            check_bit(
+                1'b1,
+                error,
+                "S4: error ativo pois o estoque esta zerado"
+            );
+        end
+    endtask
 
 endmodule
 
