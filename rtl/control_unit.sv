@@ -4,7 +4,7 @@
 
 module control_unit (
     input  logic       clk,
-    input  logic       nrst,
+    input  logic       rst,
     input  logic       cancel,
     input  logic [1:0] coin_in,
     input  logic       confirm,
@@ -30,8 +30,8 @@ module control_unit (
     assign coin_present = (coin_in != 2'b00);
 
     // Transição e registrador de estados
-    always_ff @(posedge clk or negedge nrst) begin : STATE_TRANSITION
-        if (!nrst || cancel) begin
+    always_ff @(posedge clk) begin : STATE_TRANSITION
+        if (rst || cancel) begin
             state_q <= ST_IDLE;
         end
         else begin

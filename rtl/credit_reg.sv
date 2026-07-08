@@ -4,7 +4,7 @@
 
 module credit_reg (
     input  logic       clk,
-    input  logic       nrst,
+    input  logic       rst,
     input  logic       cancel,
     input  logic       credit_load,
     input  logic       clear_credit,
@@ -25,8 +25,8 @@ module credit_reg (
     // adiconado junto a repetidos valores de coin_value para a mesma moeda inserida
     assign coin_inserted = (coin_in_q == 2'b00) && (coin_in   != 2'b00);
  
-    always_ff @(posedge clk or negedge nrst) begin
-        if (!nrst) begin
+    always_ff @(posedge clk) begin
+        if (rst) begin
             credit    <= '0;
             coin_in_q <= 2'b00;
 

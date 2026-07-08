@@ -1,4 +1,3 @@
-
 module tb_vending;
 
     import vending_pkg::*;
@@ -7,7 +6,7 @@ module tb_vending;
     // Sinais do DUT
     // ------------------------------------------------------
     logic       clk;
-    logic       nrst;
+    logic       rst;
     logic [1:0] coin_in;
     logic [1:0] sel_item;
     logic       confirm;
@@ -23,13 +22,12 @@ module tb_vending;
     int unsigned failures;
     int          scenario;
 
-// ---------------------- INSTÂNCIAS ------------------------
     // ------------------------------------------------------
     // Instância do DUT
     // ------------------------------------------------------
     vending_top dut (
         .clk        (clk),
-        .nrst       (nrst),
+        .rst        (rst),
         .coin_in    (coin_in),
         .sel_item   (sel_item),
         .confirm    (confirm),
@@ -41,23 +39,26 @@ module tb_vending;
         .state_out  (state_out)
     );
 
-// ------ DEFININDO TAREFAS DO PROCESSO DE VERIFICAÇÃO ------
     // ------------------------------------------------------
     // TAREFA PARA RESET INICIAL POR 2 CICLOS DE CLOCK
+    // Reset síncrono ativo em nível alto
     // ------------------------------------------------------
     task automatic reset_dut;
         begin
-            nrst     = 1'b0;
+            rst      = 1'b1;
             coin_in  = 2'b00;
             sel_item = 2'b00;
             confirm  = 1'b0;
             cancel   = 1'b0;
 
+            // O reset é amostrado nas bordas de subida.
             repeat (2) @(posedge clk);
 
+            // Desativa o reset longe da borda ativa.
             @(negedge clk);
-            nrst = 1'b1;
+            rst = 1'b0;
 
+            // Aguarda um clock com o reset desativado.
             @(posedge clk);
             #1ps;
 
@@ -72,10 +73,6 @@ module tb_vending;
 
     // ------------------------------------------------------
     // TAREFA PARA APLICAR UMA MOEDA
-    // ------------------------------------------------------
-    // Mantém coin_in != 00 por um ciclo e depois garante
-    // que coin_in = 00 seja amostrado em um clock antes
-    // da próxima moeda.
     // ------------------------------------------------------
     task automatic apply_coin(
         input logic [1:0] value
@@ -101,9 +98,8 @@ module tb_vending;
     endtask
 
     // ------------------------------------------------------
-    // GERAÇÃO DE PULSOS PARA CONFIRMAÇÃO E CANCELAMENTO ----
+    // GERAÇÃO DE PULSOS PARA CONFIRMAÇÃO E CANCELAMENTO
     // ------------------------------------------------------
-    // Pulso de confirmacao
     task automatic press_confirm;
         begin
             @(negedge clk);
@@ -118,7 +114,6 @@ module tb_vending;
         end
     endtask
 
-    // Pulso de cancelamento
     task automatic press_cancel;
         begin
             @(negedge clk);
@@ -135,9 +130,6 @@ module tb_vending;
 
     // ------------------------------------------------------
     // TAREFA QUE EXECUTA UMA COMPRA COMPLETA
-    // ------------------------------------------------------
-    // Estímulo de compra: seleciona item, insere moedas
-    // e confirma a compra.
     // ------------------------------------------------------
     task automatic buy_item(
         input logic [1:0] item,
@@ -222,8 +214,6 @@ module tb_vending;
         end
     endtask
 
-// ================================= TASKS PARA CENÁRIOS ==========================================
-
     // ======================================================
     // CENÁRIO 1
     // Compra bem-sucedida de café com troco
@@ -239,7 +229,7 @@ module tb_vending;
             $display("CENARIO 1: compra de cafe com troco");
             $display("============================================================");
 
-            buy_item(2'd0, coins); // Café: R$0,25
+            buy_item(2'd0, coins);
 
             wait_for_state(ST_DISPENSE,
                            "S1: FSM entra em DISPENSE");
@@ -279,7 +269,7 @@ module tb_vending;
             $display("CENARIO 2: credito insuficiente");
             $display("============================================================");
 
-            buy_item(2'd3, coins); // Snack: R$1,00
+            buy_item(2'd3, coins);
 
             wait_for_state(ST_ERROR,
                            "S2: FSM entra em ERROR");
@@ -310,8 +300,8 @@ module tb_vending;
             $display("CENARIO 3: cancelamento com R$2,00");
             $display("============================================================");
 
-            apply_coin(2'b11); // R$1,00
-            apply_coin(2'b11); // R$1,00
+            apply_coin(2'b11);
+            apply_coin(2'b11);
 
             check(8'd200, display,
                   "S3: credito acumulado igual a 200");
@@ -339,13 +329,12 @@ module tb_vending;
 
         begin
             coins = new[1];
-            coins[0] = 2'b11; // R$1,00
+            coins[0] = 2'b11;
 
             $display("\n============================================================");
             $display("CENARIO 4: estoque de cafe zerado");
             $display("============================================================");
 
-            // Cinco compras bem-sucedidas: estoque inicial do café = 5.
             for (i = 1; i <= 5; i++) begin
                 buy_item(2'd0, coins);
 
@@ -377,7 +366,6 @@ module tb_vending;
                 );
             end
 
-            // Sexta tentativa: estoque já é zero.
             buy_item(2'd0, coins);
 
             wait_for_state(
@@ -393,13 +381,13 @@ module tb_vending;
         end
     endtask
 
-// --- INICIANDO SIMULAÇÃO E EXECUTANDO TODOS OS CENÁRIOS EM SEQUÊNCIA
-
     // ------------------------------------------------------
     // Clock: período de 10 ns
     // ------------------------------------------------------
     always #5 clk = ~clk;
 
+    // ------------------------------------------------------
+    // Teste principal
     // ------------------------------------------------------
     initial begin : MAIN_TEST
 
@@ -407,7 +395,7 @@ module tb_vending;
         $fsdbDumpvars(0, tb_vending);
 
         clk      = 1'b0;
-        nrst     = 1'b0;
+        rst      = 1'b1;
         coin_in  = 2'b00;
         sel_item = 2'b00;
         confirm  = 1'b0;
@@ -416,7 +404,7 @@ module tb_vending;
         checks   = 0;
         failures = 0;
 
-        reset_dut(); // verifica o reset
+        reset_dut();
 
         $display("============================================================");
 
@@ -424,10 +412,14 @@ module tb_vending;
         $finish;
     end
 
+    // ------------------------------------------------------
     // Timeout global
+    // ------------------------------------------------------
     initial begin
         #5000;
         $fatal(1, "Timeout: simulacao excedeu 5000 ns");
     end
 
 endmodule
+
+

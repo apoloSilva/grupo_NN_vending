@@ -1,6 +1,6 @@
 module vending_memory (
     input  logic       clk,
-    input  logic       nrst,
+    input  logic       rst,
     input  logic       mem_read,
     input  logic       mem_write,
     input  logic [1:0] addr,
@@ -14,8 +14,8 @@ module vending_memory (
     // mem[i] = {price[7:0], stock[7:0]} = {preço, quantidade}
     logic [15:0] mem [0:3];
 
-    always_ff @(posedge clk or negedge nrst) begin
-        if (!nrst) begin
+    always_ff @(posedge clk) begin
+        if (rst) begin
             // Inicializa o estoque.
             // Temos apenas quatro itens na máquina de vendas.
             mem[0] <= {8'd25,  8'd5};  // cafe

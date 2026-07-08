@@ -1,6 +1,6 @@
 module vending_top (
     input  logic       clk,
-    input  logic       nrst,       // active low reset
+    input  logic       rst,       // active low reset
     input  logic [1:0] coin_in,
     input  logic [1:0] sel_item,   // seleciona um item entre 4
     input  logic       confirm,    // confirma seção
@@ -24,7 +24,7 @@ module vending_top (
 
     control_unit u_control_unit (
         .clk           (clk),
-        .nrst           (nrst),
+        .rst           (rst),
         .cancel        (cancel),
         .coin_in       (coin_in), 
         .confirm       (confirm),
@@ -45,7 +45,7 @@ module vending_top (
 // -------------------------------------------------------
     credit_reg u_credit_reg (
         .clk          (clk),
-        .nrst          (nrst),
+        .rst          (rst),
         .cancel       (cancel),
         .credit_load  (credit_load),
         .clear_credit (clear_credit),
@@ -55,7 +55,7 @@ module vending_top (
 
     vending_memory u_memory (
         .clk        (clk),
-        .nrst        (nrst),
+        .rst       (rst),
         .mem_read   (mem_read),
         .mem_write  (mem_write),
         .addr       (sel_item),
@@ -77,9 +77,9 @@ module vending_top (
         .change (change) // atualizada instantaneamente
     );
 
-    // bloco para definir o troco de acordo com os sinais nrst, cancel e change_capture
-    always_ff @(posedge clk or negedge nrst) begin // c
-        if (!nrst) begin
+    // bloco para definir o troco de acordo com os sinais rst, cancel e change_capture
+    always_ff @(posedge clk) begin // c
+        if (rst) begin
             change_out <= '0;
         end else if (cancel) begin
             change_out <= credit; // 
