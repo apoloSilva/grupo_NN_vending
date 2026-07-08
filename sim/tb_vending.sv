@@ -1,3 +1,5 @@
+
+
 module tb_vending;
 
     import vending_pkg::*;
@@ -19,12 +21,6 @@ module tb_vending;
     int unsigned checks;
     int unsigned failures;
     int scenario;
-
-    event start_s1;
-    event done_s1;
-    event done_s2;
-    event done_s3;
-    event done_s4;
 
     // DUT
     vending_top dut (
@@ -54,8 +50,6 @@ module tb_vending;
         $fsdbDumpfile("waves.fsdb");
         $fsdbDumpvars(0, tb_vending);
 
-        $timeformat(-9, 3, " ns", 10);
-
         clk      = 1'b0;
         rst      = 1'b1;
         coin_in  = 2'b00;
@@ -66,11 +60,30 @@ module tb_vending;
         checks   = 0;
         failures = 0;
 
-        // Executa todos os cenários definidos nos blocos "initial begin ... end" até done_s4 é assinalado
-        #1ps;
-        -> start_s1;
+        // ----------------------------------------------------------
+        // Reset inicial por 2 ciclos de clock
+        // ----------------------------------------------------------
+        $display("\nReset inicial por 2 ciclos de clock");
+        reset_dut();
 
-        @done_s4;
+        check_state(ST_IDLE, state_out, "Reset: FSM inicia em IDLE");
+        check(8'd0, display, "Reset: credito inicial igual a zero");
+        $display("[TIME] Apos reset inicial: %0.0f ns", $realtime);
+
+        // ----------------------------------------------------------
+        // Cenários obrigatórios da seção 8.1
+        // ----------------------------------------------------------
+        scenario_1_success_with_change();
+        $display("[TIME] Apos cenario 1: %0.0f ns", $realtime);
+
+        scenario_2_insufficient_credit();
+        $display("[TIME] Apos cenario 2: %0.0f ns", $realtime);
+
+        scenario_3_cancel();
+        $display("[TIME] Apos cenario 3: %0.0f ns", $realtime);
+
+        scenario_4_zero_stock();
+        $display("[TIME] Apos cenario 4: %0.0f ns", $realtime);
 
         $display("\n============================================================");
 
@@ -88,59 +101,6 @@ module tb_vending;
 
         #10;
         $finish;
-    end
-
-    initial begin : TEST_SCENARIO_1
-
-        @start_s1;
-
-        // ----------------------------------------------------------
-        // Reset inicial por 2 ciclos de clock
-        // ----------------------------------------------------------
-        $display("\nReset inicial por 2 ciclos de clock");
-        reset_dut();
-
-        check_state(ST_IDLE, state_out, "Reset: FSM inicia em IDLE");
-        check(8'd0, display, "Reset: credito inicial igual a zero");
-        $display("[TIME] Apos reset inicial: %0t", $time);
-        
-        // ----------------------------------------------------------
-        // Execução do cenário 1
-        // ----------------------------------------------------------
-        scenario_1_success_with_change();
-        $display("[TIME] Apos cenario 1: %0t", $time);
-
-        -> done_s1;
-    end
-
-    initial begin : TEST_SCENARIO_2
-
-        @done_s1;
-
-        scenario_2_insufficient_credit();
-        $display("[TIME] Apos cenario 2: %0t", $time);
-
-        -> done_s2;
-    end
-
-    initial begin : TEST_SCENARIO_3
-
-        @done_s2;
-
-        scenario_3_cancel();
-        $display("[TIME] Apos cenario 3: %0t", $time);
-
-        -> done_s3;
-    end
-
-    initial begin : TEST_SCENARIO_4
-
-        @done_s3;
-
-        scenario_4_zero_stock();
-        $display("[TIME] Apos cenario 4: %0t", $time);
-
-        -> done_s4;
     end
 
     // Timeout global
@@ -416,9 +376,8 @@ module tb_vending;
             $display("CENARIO 4: estoque de cafe zerado");
             $display("============================================================");
 
-            // O cenário 1 já vendeu 1 café.
-            // Como o estoque inicial era 5, agora restam 4 cafés.
-            // As próximas 4 compras correspondem às vendas 2, 3, 4 e 5.
+            // Cinco compras bem-sucedidas de café, levando em consideração a já feita
+            // durante o cenário 1
             for (i = 2; i <= 5; i++) begin
                 buy_item(2'd0, coins);
 
