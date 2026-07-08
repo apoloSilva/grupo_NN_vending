@@ -95,6 +95,11 @@ module control_unit (
 
         unique case (state_q)
 
+//            ST_IDLE: begin
+//		if (coin_present)
+//		  credit_load = 1'b1;
+//            end
+
             ST_COLLECT: begin
                 credit_load = 1'b1;
             end

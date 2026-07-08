@@ -48,7 +48,7 @@ module vending_top (
         .rst          (rst),
         .cancel       (cancel),
         .credit_load  (credit_load),
-        .clear_credit (clear_credit),
+        .clear_credit (clear_credit), // final da operação com sucesso, durante troco
         .coin_in      (coin_in),
         .credit       (credit)
     );
