@@ -9,13 +9,13 @@ SYNTH_DIR := synth
 # Arquivos
 # ==========================================
 RTL_FILES := \
-	$(RTL_DIR)/vending_pkg.sv \
-	$(RTL_DIR)/credit_reg.sv \
-	$(RTL_DIR)/memory.sv \
-	$(RTL_DIR)/comparator.sv \
-	$(RTL_DIR)/subtractor.sv \
-	$(RTL_DIR)/control_unit.sv \
-	$(RTL_DIR)/vending_top.sv
+    $(RTL_DIR)/vending_pkg.sv \
+    $(RTL_DIR)/credit_reg.sv \
+    $(RTL_DIR)/memory.sv \
+    $(RTL_DIR)/comparator.sv \
+    $(RTL_DIR)/subtractor.sv \
+    $(RTL_DIR)/control_unit.sv \
+    $(RTL_DIR)/vending_top.sv
 
 TB_FILES := $(TB_DIR)/tb_vending.sv
 
@@ -30,7 +30,6 @@ WAVE_FILE := waves.fsdb
 
 # ==========================================
 # Flags das ferramentas comerciais
-# (mantidas apenas como referência)
 # ==========================================
 TIMESCALE = 1ns/1ps
 
@@ -39,7 +38,8 @@ VLOGAN_FLAGS = -full64 \
                -kdb \
                +lint=all
 
-VCS_FLAGS = -full64 -timescale=$(TIMESCALE) \
+VCS_FLAGS = -full64 \
+            -timescale=$(TIMESCALE) \
             -debug_access+all \
             -kdb
 
@@ -67,27 +67,36 @@ run: compile
 wave:
 	verdi -ssf $(WAVE_FILE) &
 
+
 # ==========================================
 # Síntese
 # ==========================================
-synth:
-	dc_shell -f $(SYNTH_DIR)/synth.tcl # padrão
+synth: clean
+#	CLK_PERIOD=20 dc_shell -f $(SYNTH_DIR)/synth.tcl
 #	CLK_PERIOD=18 dc_shell -f $(SYNTH_DIR)/synth.tcl
+#	CLK_PERIOD=16 dc_shell -f $(SYNTH_DIR)/synth.tcl
+#	CLK_PERIOD=14 dc_shell -f $(SYNTH_DIR)/synth.tcl
+#	CLK_PERIOD=12 dc_shell -f $(SYNTH_DIR)/synth.tcl
+#	CLK_PERIOD=10 dc_shell -f $(SYNTH_DIR)/synth.tcl
+#	CLK_PERIOD=8 dc_shell -f $(SYNTH_DIR)/synth.tcl
+	CLK_PERIOD=6 dc_shell -f $(SYNTH_DIR)/synth.tcl
+#	CLK_PERIOD=4 dc_shell -f $(SYNTH_DIR)/synth.tcl
+#	CLK_PERIOD=2 dc_shell -f $(SYNTH_DIR)/synth.tcl
 
 # ==========================================
 # Limpeza da síntese
 # ==========================================
 clean_synth:
 	rm -rf \
-		./alib-52 \
-		./default.svf \
-		./work*
+	    ./alib-52 \
+	    ./default.svf \
+	    ./work*
 
 	# Remove relatórios e arquivos intermediários antigos de síntese.
 	find $(SYNTH_DIR) -type f \( \
-		-name "*.ddc" -o \
-		-name "*.db" -o \
-		-name "*.rpt" \
+	    -name "*.ddc" -o \
+	    -name "*.db" -o \
+	    -name "*.rpt" \
 	\) -delete
 
 # ==========================================
@@ -95,30 +104,31 @@ clean_synth:
 # ==========================================
 clean_sim:
 	rm -rf \
-		csrc \
-		simv* \
-		obj_dir \
-		*.daidir \
-		novas* \
-		AN.DB \
-		ucli.key \
-		verdi* \
-		DVEfiles \
-		.vlogan* \
-		*.fsdb \
-		*.fst \
-		*.vcd \
-		*.log \
-		*.out \
-		*.fls \
-		*.gz \
-		*.fdb_latexmk \
-		*.aux \
-
+	    csrc \
+	    simv* \
+	    obj_dir \
+	    *.daidir \
+	    novas* \
+	    AN.DB \
+	    ucli.key \
+	    verdi* \
+	    DVEfiles \
+	    .vlogan* \
+	    *.fsdb \
+	    *.fst \
+	    *.vcd \
+	    *.log \
+	    *.out \
+	    *.fls \
+	    *.gz \
+	    *.fdb_latexmk \
+	    *.aux
 
 # ==========================================
 # Limpeza total
 # ==========================================
 clean: clean_sim clean_synth
 
-.PHONY: syntax lint_rtl compile run wave synth clean clean_sim clean_synth
+.PHONY: syntax compile run wave synth clean clean_sim clean_synth
+
+

@@ -1,15 +1,17 @@
 # Synopsys Design Constraints para máquina de vendas
 
 # -------------------------------------------------------------------------
-# Clock
+# Verificação do período de clock
 # -------------------------------------------------------------------------
-# O período padrão é 20 ns, equivalente a 50 MHz.
-# O valor pode ser alterado pela variável CLK_PERIOD definida em synth.tcl.
-if {![info exists CLK_PERIOD]} {
-    set CLK_PERIOD 20.0
+# A variável deve ter sido definida pelo script synth.tcl.
+if {![info exists ::CLK_PERIOD] || $::CLK_PERIOD eq ""} {
+    error "CLK_PERIOD não foi definido antes da leitura do arquivo vending.sdc."
 }
 
-create_clock -name clk -period $CLK_PERIOD [get_ports clk]
+puts "INFO: vending.sdc - CLK_PERIOD = $::CLK_PERIOD ns"
+
+
+create_clock -name clk -period $::CLK_PERIOD [get_ports clk]
 set_clock_uncertainty 0.5 [get_clocks clk]
 
 # -------------------------------------------------------------------------
