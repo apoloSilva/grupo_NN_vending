@@ -8,6 +8,9 @@ set RTL_DIR   $ROOT_DIR/rtl
 set LIBS_DIR  $ROOT_DIR/libs
 set SYNTH_DIR $ROOT_DIR/synth
 
+file mkdir $ROOT_DIR/work
+file mkdir $SYNTH_DIR/reports
+
 set_app_var search_path [list \
     $ROOT_DIR \
     $RTL_DIR \
@@ -18,6 +21,18 @@ set_app_var search_path [list \
 # Top do design a sintetizar
 # -------------------------------------------------------------------------
 set TOP vending_top
+
+# -------------------------------------------------------------------------
+# Período do clock
+# -------------------------------------------------------------------------
+# Valor padrão: 20 ns.
+# Pode ser alterado na execução, por exemplo:
+# CLK_PERIOD=18 dc_shell -f synth/synth.tcl
+if {[info exists ::env(CLK_PERIOD)]} {
+    set CLK_PERIOD $::env(CLK_PERIOD)
+} else {
+    set CLK_PERIOD 20.0
+}
 
 # -------------------------------------------------------------------------
 # Bibliotecas alvo e link
@@ -64,11 +79,15 @@ current_design $TOP
 link
 
 read_sdc $SYNTH_DIR/vending.sdc; # carrega arquivo sdc
+set_fix_hold [get_clocks clk]
+
 redirect $SYNTH_DIR/reports/check_design.rpt {check_design}
 compile_ultra -no_autoungroup
 
+
 redirect $SYNTH_DIR/reports/report_area.rpt {report_area}
 redirect $SYNTH_DIR/reports/report_timing.rpt {report_timing -max_paths 10}
+redirect $SYNTH_DIR/reports/report_hold.rpt {report_timing -delay_type min -max_paths 10}
 redirect $SYNTH_DIR/reports/report_power.rpt {report_power}
 redirect $SYNTH_DIR/reports/report_constraints.rpt {report_constraint -all_violators}
 
@@ -76,3 +95,4 @@ write -format verilog -hierarchy -output $SYNTH_DIR/${TOP}_syn.v; # gera arquivo
 write -format ddc -hierarchy -output $SYNTH_DIR/${TOP}_syn.ddc; # gera arquivo sintetizado em .ddc
 
 quit
+

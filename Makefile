@@ -71,7 +71,8 @@ wave:
 # Síntese
 # ==========================================
 synth:
-	dc_shell -f $(SYNTH_DIR)/synth.tcl
+	dc_shell -f $(SYNTH_DIR)/synth.tcl # padrão
+#	CLK_PERIOD=18 dc_shell -f $(SYNTH_DIR)/synth.tcl
 
 # ==========================================
 # Limpeza da síntese
