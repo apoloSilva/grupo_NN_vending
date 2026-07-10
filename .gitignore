@@ -3,7 +3,7 @@
 !.gitignore
 
 !Makefile
-# !relatorio.pdf
+!relatorio.pdf
 !README.md
 
 !rtl/
