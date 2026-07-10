@@ -35,6 +35,9 @@ make syntax
 
 Para verificar a sintaxe e elaborar o testbench com o VCS:
 
+```bash
+make compile`
+```
 ## Simulação
 
 Para compilar e executar o testbench:
