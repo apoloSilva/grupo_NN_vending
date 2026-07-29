@@ -1,389 +1,8 @@
 /////////////////////////////////////////////////////////////
 // Created by: Synopsys DC Ultra(TM) in wire load mode
 // Version   : X-2025.06-SP2
-// Date      : Wed Jul 29 00:05:26 2026
+// Date      : Wed Jul 29 14:05:02 2026
 /////////////////////////////////////////////////////////////
-
-
-module control_unit ( clk, rst, cancel, coin_in, confirm, read_valid, can_sell, 
-        credit_load, clear_credit, mem_read, mem_write, dispense, error, 
-        change_capture, state_out );
-  input [1:0] coin_in;
-  output [2:0] state_out;
-  input clk, rst, cancel, confirm, read_valid, can_sell;
-  output credit_load, clear_credit, mem_read, mem_write, dispense, error,
-         change_capture;
-  wire   mem_write, N47, N49, n1, n2, n3, n4, n5, n6, n7, n9, n10, n11, n12,
-         n13;
-  assign change_capture = mem_write;
-  assign dispense = mem_write;
-
-  DFFX1_RVT \state_q_reg[0]  ( .D(N47), .CLK(clk), .Q(state_out[0]), .QN(n11)
-         );
-  DFFX1_RVT \state_q_reg[2]  ( .D(N49), .CLK(clk), .Q(state_out[2]), .QN(n9)
-         );
-  DFFSSRX1_RVT \state_q_reg[1]  ( .D(n13), .SETB(1'b1), .RSTB(n12), .CLK(clk), 
-        .Q(state_out[1]), .QN(n10) );
-  AND3X1_RVT U4 ( .A1(state_out[2]), .A2(n10), .A3(n11), .Y(clear_credit) );
-  NOR2X0_RVT U5 ( .A1(rst), .A2(cancel), .Y(n13) );
-  AO222X1_RVT U6 ( .A1(n9), .A2(state_out[1]), .A3(n9), .A4(coin_in[0]), .A5(
-        n9), .A6(coin_in[1]), .Y(n1) );
-  OA222X1_RVT U7 ( .A1(n10), .A2(read_valid), .A3(n10), .A4(n11), .A5(
-        state_out[0]), .A6(n1), .Y(n3) );
-  NAND3X0_RVT U8 ( .A1(state_out[0]), .A2(confirm), .A3(n9), .Y(n2) );
-  AND3X1_RVT U9 ( .A1(n13), .A2(n3), .A3(n2), .Y(N47) );
-  AND3X1_RVT U10 ( .A1(state_out[0]), .A2(n10), .A3(n9), .Y(credit_load) );
-  AND3X1_RVT U11 ( .A1(state_out[1]), .A2(n11), .A3(n9), .Y(mem_read) );
-  INVX0_RVT U12 ( .A(can_sell), .Y(n4) );
-  NAND2X0_RVT U13 ( .A1(n4), .A2(read_valid), .Y(n6) );
-  AO22X1_RVT U14 ( .A1(confirm), .A2(credit_load), .A3(mem_read), .A4(n6), .Y(
-        n12) );
-  AND3X1_RVT U15 ( .A1(state_out[0]), .A2(state_out[1]), .A3(n9), .Y(mem_write) );
-  AND3X1_RVT U16 ( .A1(state_out[0]), .A2(state_out[2]), .A3(n10), .Y(error)
-         );
-  NAND2X0_RVT U17 ( .A1(state_out[1]), .A2(n9), .Y(n5) );
-  AOI21X1_RVT U18 ( .A1(n11), .A2(n6), .A3(n5), .Y(n7) );
-  OA21X1_RVT U19 ( .A1(error), .A2(n7), .A3(n13), .Y(N49) );
-endmodule
-
-
-module credit_reg ( clk, rst, cancel, credit_load, clear_credit, coin_in, 
-        credit );
-  input [1:0] coin_in;
-  output [7:0] credit;
-  input clk, rst, cancel, credit_load, clear_credit;
-  wire   coin_pending, N42, N43, N44, N45, N46, N47, N48, n18, n19, n20, n21,
-         n22, n23, n24, n25, n27, n28, n29, n31, n32, \C1/Z_5 , \C1/Z_4 ,
-         \C1/Z_3 , \C1/Z_1 , \C1/Z_0 , \DP_OP_12J1_122_223/n8 ,
-         \DP_OP_12J1_122_223/n7 , \DP_OP_12J1_122_223/n6 ,
-         \DP_OP_12J1_122_223/n5 , \DP_OP_12J1_122_223/n4 ,
-         \DP_OP_12J1_122_223/n3 , \DP_OP_12J1_122_223/n2 , n1, n2, n3, n4, n5,
-         n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n26, n30, n33,
-         n34, n35, n36, n37, n41, n42, n43, n44, n45, n46, n47, n48;
-  wire   [1:0] coin_in_q;
-  wire   [7:0] pending_coin_value;
-
-  DFFX1_RVT \pending_coin_value_reg[0]  ( .D(n32), .CLK(clk), .Q(
-        pending_coin_value[0]) );
-  DFFX1_RVT \pending_coin_value_reg[3]  ( .D(n29), .CLK(clk), .Q(
-        pending_coin_value[3]) );
-  DFFX1_RVT \pending_coin_value_reg[4]  ( .D(n28), .CLK(clk), .Q(
-        pending_coin_value[4]) );
-  DFFX1_RVT \pending_coin_value_reg[5]  ( .D(n27), .CLK(clk), .Q(
-        pending_coin_value[5]) );
-  DFFX1_RVT \pending_coin_value_reg[1]  ( .D(n31), .CLK(clk), .Q(
-        pending_coin_value[1]) );
-  DFFX1_RVT \pending_coin_value_reg[2]  ( .D(n44), .CLK(clk), .Q(
-        pending_coin_value[2]) );
-  DFFX1_RVT \pending_coin_value_reg[6]  ( .D(n43), .CLK(clk), .Q(
-        pending_coin_value[6]) );
-  DFFX1_RVT \credit_reg[0]  ( .D(n25), .CLK(clk), .Q(credit[0]) );
-  DFFX1_RVT \credit_reg[7]  ( .D(n24), .CLK(clk), .Q(credit[7]) );
-  DFFX1_RVT \credit_reg[6]  ( .D(n23), .CLK(clk), .Q(credit[6]) );
-  DFFX1_RVT \credit_reg[5]  ( .D(n22), .CLK(clk), .Q(credit[5]) );
-  DFFX1_RVT \credit_reg[4]  ( .D(n21), .CLK(clk), .Q(credit[4]) );
-  DFFX1_RVT \credit_reg[3]  ( .D(n20), .CLK(clk), .Q(credit[3]) );
-  DFFX1_RVT \credit_reg[2]  ( .D(n19), .CLK(clk), .Q(credit[2]) );
-  DFFX1_RVT \credit_reg[1]  ( .D(n18), .CLK(clk), .Q(credit[1]) );
-  HADDX1_RVT \DP_OP_12J1_122_223/U9  ( .A0(\C1/Z_0 ), .B0(credit[0]), .C1(
-        \DP_OP_12J1_122_223/n8 ), .SO(N42) );
-  FADDX1_RVT \DP_OP_12J1_122_223/U8  ( .A(\C1/Z_1 ), .B(credit[1]), .CI(
-        \DP_OP_12J1_122_223/n8 ), .CO(\DP_OP_12J1_122_223/n7 ), .S(N43) );
-  FADDX1_RVT \DP_OP_12J1_122_223/U7  ( .A(n41), .B(credit[2]), .CI(
-        \DP_OP_12J1_122_223/n7 ), .CO(\DP_OP_12J1_122_223/n6 ), .S(N44) );
-  FADDX1_RVT \DP_OP_12J1_122_223/U6  ( .A(\C1/Z_3 ), .B(credit[3]), .CI(
-        \DP_OP_12J1_122_223/n6 ), .CO(\DP_OP_12J1_122_223/n5 ), .S(N45) );
-  FADDX1_RVT \DP_OP_12J1_122_223/U5  ( .A(\C1/Z_4 ), .B(credit[4]), .CI(
-        \DP_OP_12J1_122_223/n5 ), .CO(\DP_OP_12J1_122_223/n4 ), .S(N46) );
-  FADDX1_RVT \DP_OP_12J1_122_223/U4  ( .A(\C1/Z_5 ), .B(credit[5]), .CI(
-        \DP_OP_12J1_122_223/n4 ), .CO(\DP_OP_12J1_122_223/n3 ), .S(N47) );
-  FADDX1_RVT \DP_OP_12J1_122_223/U3  ( .A(n42), .B(credit[6]), .CI(
-        \DP_OP_12J1_122_223/n3 ), .CO(\DP_OP_12J1_122_223/n2 ), .S(N48) );
-  DFFSSRX1_RVT \coin_in_q_reg[0]  ( .D(1'b0), .SETB(n46), .RSTB(n47), .CLK(clk), .Q(coin_in_q[0]) );
-  DFFSSRX1_RVT \coin_in_q_reg[1]  ( .D(1'b0), .SETB(n45), .RSTB(n47), .CLK(clk), .Q(coin_in_q[1]) );
-  DFFSSRX1_RVT coin_pending_reg ( .D(1'b0), .SETB(n1), .RSTB(n48), .CLK(clk), 
-        .Q(coin_pending) );
-  OR2X1_RVT U3 ( .A1(credit_load), .A2(n10), .Y(n1) );
-  OR3X1_RVT U7 ( .A1(cancel), .A2(clear_credit), .A3(rst), .Y(n10) );
-  INVX0_RVT U8 ( .A(n10), .Y(n47) );
-  INVX0_RVT U9 ( .A(coin_in[1]), .Y(n45) );
-  AND2X1_RVT U10 ( .A1(coin_pending), .A2(pending_coin_value[5]), .Y(n3) );
-  NOR2X0_RVT U11 ( .A1(coin_in[0]), .A2(coin_in[1]), .Y(n2) );
-  NOR3X0_RVT U12 ( .A1(coin_in_q[0]), .A2(coin_in_q[1]), .A3(n2), .Y(n9) );
-  INVX0_RVT U13 ( .A(n9), .Y(n5) );
-  OR2X1_RVT U14 ( .A1(n5), .A2(coin_pending), .Y(n17) );
-  NOR2X0_RVT U15 ( .A1(n45), .A2(n17), .Y(n30) );
-  OR2X1_RVT U16 ( .A1(n3), .A2(n30), .Y(\C1/Z_5 ) );
-  INVX0_RVT U17 ( .A(coin_in[0]), .Y(n46) );
-  AND2X1_RVT U18 ( .A1(n30), .A2(coin_in[0]), .Y(n4) );
-  AO21X1_RVT U19 ( .A1(coin_pending), .A2(pending_coin_value[2]), .A3(n4), .Y(
-        n41) );
-  AO21X1_RVT U20 ( .A1(coin_pending), .A2(pending_coin_value[6]), .A3(n4), .Y(
-        n42) );
-  OR2X1_RVT U21 ( .A1(n5), .A2(n1), .Y(n16) );
-  NAND2X0_RVT U22 ( .A1(n47), .A2(n16), .Y(n6) );
-  INVX0_RVT U23 ( .A(n6), .Y(n34) );
-  AND2X1_RVT U24 ( .A1(n47), .A2(coin_in[1]), .Y(n7) );
-  AND2X1_RVT U25 ( .A1(n7), .A2(n6), .Y(n26) );
-  AND2X1_RVT U26 ( .A1(n26), .A2(coin_in[0]), .Y(n8) );
-  AO21X1_RVT U27 ( .A1(pending_coin_value[6]), .A2(n34), .A3(n8), .Y(n43) );
-  AO21X1_RVT U28 ( .A1(pending_coin_value[2]), .A2(n34), .A3(n8), .Y(n44) );
-  OR2X1_RVT U29 ( .A1(coin_pending), .A2(n9), .Y(n48) );
-  AO21X1_RVT U30 ( .A1(credit_load), .A2(n48), .A3(n10), .Y(n11) );
-  INVX0_RVT U31 ( .A(n11), .Y(n37) );
-  XOR2X1_RVT U32 ( .A1(\DP_OP_12J1_122_223/n2 ), .A2(credit[7]), .Y(n12) );
-  AND2X1_RVT U33 ( .A1(n47), .A2(n11), .Y(n36) );
-  AO22X1_RVT U34 ( .A1(credit[7]), .A2(n37), .A3(n12), .A4(n36), .Y(n24) );
-  AO22X1_RVT U35 ( .A1(credit[6]), .A2(n37), .A3(N48), .A4(n36), .Y(n23) );
-  AO22X1_RVT U36 ( .A1(credit[5]), .A2(n37), .A3(N47), .A4(n36), .Y(n22) );
-  AO22X1_RVT U37 ( .A1(credit[4]), .A2(n37), .A3(N46), .A4(n36), .Y(n21) );
-  AO22X1_RVT U38 ( .A1(credit[3]), .A2(n37), .A3(N45), .A4(n36), .Y(n20) );
-  AO22X1_RVT U39 ( .A1(credit[2]), .A2(n37), .A3(N44), .A4(n36), .Y(n19) );
-  AO22X1_RVT U40 ( .A1(credit[1]), .A2(n37), .A3(N43), .A4(n36), .Y(n18) );
-  AO21X1_RVT U41 ( .A1(pending_coin_value[5]), .A2(n34), .A3(n26), .Y(n27) );
-  AND2X1_RVT U42 ( .A1(coin_in[1]), .A2(coin_in[0]), .Y(n14) );
-  NOR2X0_RVT U43 ( .A1(n14), .A2(n16), .Y(n13) );
-  AO21X1_RVT U44 ( .A1(pending_coin_value[4]), .A2(n34), .A3(n13), .Y(n28) );
-  NOR2X0_RVT U45 ( .A1(n14), .A2(n17), .Y(n15) );
-  AO21X1_RVT U46 ( .A1(pending_coin_value[4]), .A2(coin_pending), .A3(n15), 
-        .Y(\C1/Z_4 ) );
-  NOR2X0_RVT U47 ( .A1(coin_in[1]), .A2(n16), .Y(n33) );
-  AO21X1_RVT U48 ( .A1(pending_coin_value[3]), .A2(n34), .A3(n33), .Y(n29) );
-  NOR2X0_RVT U49 ( .A1(coin_in[1]), .A2(n17), .Y(n35) );
-  AO21X1_RVT U50 ( .A1(pending_coin_value[3]), .A2(coin_pending), .A3(n35), 
-        .Y(\C1/Z_3 ) );
-  AO22X1_RVT U51 ( .A1(pending_coin_value[1]), .A2(n34), .A3(n26), .A4(n46), 
-        .Y(n31) );
-  AO22X1_RVT U52 ( .A1(pending_coin_value[1]), .A2(coin_pending), .A3(n30), 
-        .A4(n46), .Y(\C1/Z_1 ) );
-  AO21X1_RVT U53 ( .A1(pending_coin_value[0]), .A2(n34), .A3(n33), .Y(n32) );
-  AO21X1_RVT U54 ( .A1(pending_coin_value[0]), .A2(coin_pending), .A3(n35), 
-        .Y(\C1/Z_0 ) );
-  AO22X1_RVT U55 ( .A1(credit[0]), .A2(n37), .A3(N42), .A4(n36), .Y(n25) );
-endmodule
-
-
-module vending_memory ( clk, rst, mem_read, mem_write, addr, price, stock, 
-        read_valid );
-  input [1:0] addr;
-  output [7:0] price;
-  output [7:0] stock;
-  input clk, rst, mem_read, mem_write;
-  output read_valid;
-  wire   \mem[0][4] , \mem[0][3] , \mem[0][2] , \mem[0][1] , \mem[0][0] ,
-         \mem[1][4] , \mem[1][3] , \mem[1][2] , \mem[1][1] , \mem[1][0] ,
-         \mem[2][4] , \mem[2][3] , \mem[2][2] , \mem[2][1] , \mem[2][0] ,
-         \mem[3][4] , \mem[3][3] , \mem[3][2] , \mem[3][1] , \mem[3][0] , n29,
-         n30, n31, n32, n33, n37, n38, n39, n40, n41, n42, n43, n47, n48, n49,
-         n50, n51, n55, n56, n57, n58, n59, n63, n64, n65, n66, n67, n71, n72,
-         n73, n74, n75, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13,
-         n14, n15, n16, n17, n18, n19, n20, n21, n22, n23, n24, n25, n26, n27,
-         n28, n34, n35, n36, n44, n45, n46, n52, n53, n54, n60, n61, n62, n68,
-         n69, n70, n76, n77;
-  assign stock[5] = 1'b0;
-
-  DFFX1_RVT \mem_reg[3][0]  ( .D(n75), .CLK(clk), .Q(\mem[3][0] ) );
-  DFFX1_RVT \mem_reg[3][1]  ( .D(n74), .CLK(clk), .Q(\mem[3][1] ) );
-  DFFX1_RVT \mem_reg[3][2]  ( .D(n73), .CLK(clk), .Q(\mem[3][2] ) );
-  DFFX1_RVT \mem_reg[3][3]  ( .D(n72), .CLK(clk), .Q(\mem[3][3] ) );
-  DFFX1_RVT \mem_reg[3][4]  ( .D(n71), .CLK(clk), .Q(\mem[3][4] ) );
-  DFFX1_RVT \mem_reg[2][0]  ( .D(n67), .CLK(clk), .Q(\mem[2][0] ) );
-  DFFX1_RVT \mem_reg[2][1]  ( .D(n66), .CLK(clk), .Q(\mem[2][1] ) );
-  DFFX1_RVT \mem_reg[2][2]  ( .D(n65), .CLK(clk), .Q(\mem[2][2] ) );
-  DFFX1_RVT \mem_reg[2][3]  ( .D(n64), .CLK(clk), .Q(\mem[2][3] ) );
-  DFFX1_RVT \mem_reg[2][4]  ( .D(n63), .CLK(clk), .Q(\mem[2][4] ) );
-  DFFX1_RVT \mem_reg[1][0]  ( .D(n59), .CLK(clk), .Q(\mem[1][0] ) );
-  DFFX1_RVT \mem_reg[1][2]  ( .D(n57), .CLK(clk), .Q(\mem[1][2] ) );
-  DFFX1_RVT \mem_reg[1][1]  ( .D(n58), .CLK(clk), .Q(\mem[1][1] ) );
-  DFFX1_RVT \mem_reg[1][3]  ( .D(n56), .CLK(clk), .Q(\mem[1][3] ) );
-  DFFX1_RVT \mem_reg[1][4]  ( .D(n55), .CLK(clk), .Q(\mem[1][4] ) );
-  DFFX1_RVT \mem_reg[0][0]  ( .D(n51), .CLK(clk), .Q(\mem[0][0] ) );
-  DFFX1_RVT \mem_reg[0][2]  ( .D(n49), .CLK(clk), .Q(\mem[0][2] ) );
-  DFFX1_RVT \mem_reg[0][1]  ( .D(n50), .CLK(clk), .Q(\mem[0][1] ) );
-  DFFX1_RVT \mem_reg[0][3]  ( .D(n48), .CLK(clk), .Q(\mem[0][3] ) );
-  DFFX1_RVT \mem_reg[0][4]  ( .D(n47), .CLK(clk), .Q(\mem[0][4] ) );
-  DFFX1_RVT \price_reg[6]  ( .D(n43), .CLK(clk), .Q(price[6]) );
-  DFFX1_RVT \price_reg[5]  ( .D(n42), .CLK(clk), .Q(price[5]) );
-  DFFX1_RVT \price_reg[4]  ( .D(n41), .CLK(clk), .Q(price[4]) );
-  DFFX1_RVT \price_reg[3]  ( .D(n40), .CLK(clk), .Q(price[3]) );
-  DFFX1_RVT \price_reg[2]  ( .D(n39), .CLK(clk), .Q(price[2]) );
-  DFFX1_RVT \price_reg[1]  ( .D(n38), .CLK(clk), .Q(price[1]) );
-  DFFX1_RVT \price_reg[0]  ( .D(n37), .CLK(clk), .Q(price[0]) );
-  DFFX1_RVT \stock_reg[4]  ( .D(n33), .CLK(clk), .Q(stock[4]) );
-  DFFX1_RVT \stock_reg[3]  ( .D(n32), .CLK(clk), .Q(stock[3]) );
-  DFFX1_RVT \stock_reg[2]  ( .D(n31), .CLK(clk), .Q(stock[2]) );
-  DFFX1_RVT \stock_reg[1]  ( .D(n30), .CLK(clk), .Q(stock[1]) );
-  DFFX1_RVT \stock_reg[0]  ( .D(n29), .CLK(clk), .Q(stock[0]) );
-  DFFSSRX1_RVT read_valid_reg ( .D(1'b0), .SETB(rst), .RSTB(mem_read), .CLK(
-        clk), .Q(read_valid) );
-  INVX0_RVT U8 ( .A(rst), .Y(n35) );
-  NAND2X0_RVT U10 ( .A1(addr[1]), .A2(addr[0]), .Y(n44) );
-  MUX41X1_RVT U11 ( .A1(1'b0), .A3(1'b0), .A2(1'b0), .A4(1'b0), .S0(addr[1]), 
-        .S1(addr[0]), .Y(n60) );
-  MUX41X1_RVT U12 ( .A1(\mem[0][4] ), .A3(\mem[2][4] ), .A2(\mem[1][4] ), .A4(
-        \mem[3][4] ), .S0(addr[1]), .S1(addr[0]), .Y(n61) );
-  MUX41X1_RVT U13 ( .A1(\mem[0][3] ), .A3(\mem[2][3] ), .A2(\mem[1][3] ), .A4(
-        \mem[3][3] ), .S0(addr[1]), .S1(addr[0]), .Y(n62) );
-  MUX41X1_RVT U14 ( .A1(\mem[0][2] ), .A3(\mem[2][2] ), .A2(\mem[1][2] ), .A4(
-        \mem[3][2] ), .S0(addr[1]), .S1(addr[0]), .Y(n68) );
-  MUX41X1_RVT U15 ( .A1(\mem[0][0] ), .A3(\mem[2][0] ), .A2(\mem[1][0] ), .A4(
-        \mem[3][0] ), .S0(addr[1]), .S1(addr[0]), .Y(n70) );
-  MUX41X1_RVT U16 ( .A1(\mem[0][1] ), .A3(\mem[2][1] ), .A2(\mem[1][1] ), .A4(
-        \mem[3][1] ), .S0(addr[1]), .S1(addr[0]), .Y(n69) );
-  OR2X1_RVT U17 ( .A1(n70), .A2(n69), .Y(n6) );
-  OR2X1_RVT U18 ( .A1(n68), .A2(n6), .Y(n8) );
-  OR2X1_RVT U19 ( .A1(n62), .A2(n8), .Y(n10) );
-  OR2X1_RVT U20 ( .A1(n61), .A2(n10), .Y(n11) );
-  OR2X1_RVT U21 ( .A1(n60), .A2(n11), .Y(n1) );
-  NAND2X0_RVT U22 ( .A1(n1), .A2(mem_write), .Y(n20) );
-  OA21X1_RVT U23 ( .A1(n44), .A2(n20), .A3(n35), .Y(n13) );
-  INVX0_RVT U24 ( .A(n70), .Y(n2) );
-  INVX0_RVT U25 ( .A(n13), .Y(n4) );
-  AND2X1_RVT U26 ( .A1(n35), .A2(n4), .Y(n12) );
-  AO22X1_RVT U27 ( .A1(\mem[3][0] ), .A2(n13), .A3(n2), .A4(n12), .Y(n75) );
-  INVX0_RVT U28 ( .A(n6), .Y(n3) );
-  AO21X1_RVT U29 ( .A1(n70), .A2(n69), .A3(n3), .Y(n23) );
-  AO221X1_RVT U30 ( .A1(n23), .A2(n4), .A3(n13), .A4(\mem[3][1] ), .A5(rst), 
-        .Y(n74) );
-  INVX0_RVT U31 ( .A(n8), .Y(n5) );
-  AO21X1_RVT U32 ( .A1(n68), .A2(n6), .A3(n5), .Y(n25) );
-  AO22X1_RVT U33 ( .A1(\mem[3][2] ), .A2(n13), .A3(n12), .A4(n25), .Y(n73) );
-  INVX0_RVT U34 ( .A(n10), .Y(n7) );
-  AO21X1_RVT U35 ( .A1(n62), .A2(n8), .A3(n7), .Y(n26) );
-  AO22X1_RVT U36 ( .A1(\mem[3][3] ), .A2(n13), .A3(n12), .A4(n26), .Y(n72) );
-  INVX0_RVT U37 ( .A(n11), .Y(n9) );
-  AO21X1_RVT U38 ( .A1(n61), .A2(n10), .A3(n9), .Y(n27) );
-  AO22X1_RVT U39 ( .A1(\mem[3][4] ), .A2(n13), .A3(n12), .A4(n27), .Y(n71) );
-  INVX0_RVT U40 ( .A(addr[0]), .Y(n54) );
-  NAND2X0_RVT U41 ( .A1(addr[1]), .A2(n54), .Y(n46) );
-  OA21X1_RVT U42 ( .A1(n46), .A2(n20), .A3(n35), .Y(n16) );
-  INVX0_RVT U43 ( .A(n16), .Y(n14) );
-  NAND2X0_RVT U44 ( .A1(n70), .A2(n35), .Y(n22) );
-  AO22X1_RVT U45 ( .A1(n16), .A2(\mem[2][0] ), .A3(n14), .A4(n22), .Y(n67) );
-  AO221X1_RVT U46 ( .A1(n23), .A2(n14), .A3(n16), .A4(\mem[2][1] ), .A5(rst), 
-        .Y(n66) );
-  AND2X1_RVT U47 ( .A1(n35), .A2(n14), .Y(n15) );
-  AO22X1_RVT U48 ( .A1(\mem[2][2] ), .A2(n16), .A3(n15), .A4(n25), .Y(n65) );
-  AO22X1_RVT U49 ( .A1(\mem[2][3] ), .A2(n16), .A3(n15), .A4(n26), .Y(n64) );
-  AO22X1_RVT U50 ( .A1(\mem[2][4] ), .A2(n16), .A3(n15), .A4(n27), .Y(n63) );
-  INVX0_RVT U51 ( .A(addr[1]), .Y(n36) );
-  NAND2X0_RVT U52 ( .A1(addr[0]), .A2(n36), .Y(n52) );
-  OA21X1_RVT U53 ( .A1(n52), .A2(n20), .A3(n35), .Y(n19) );
-  INVX0_RVT U54 ( .A(n19), .Y(n17) );
-  AO22X1_RVT U55 ( .A1(n19), .A2(\mem[1][0] ), .A3(n17), .A4(n22), .Y(n59) );
-  AND2X1_RVT U56 ( .A1(n35), .A2(n17), .Y(n18) );
-  AO22X1_RVT U57 ( .A1(\mem[1][1] ), .A2(n19), .A3(n18), .A4(n23), .Y(n58) );
-  AO221X1_RVT U58 ( .A1(n25), .A2(n17), .A3(n19), .A4(\mem[1][2] ), .A5(rst), 
-        .Y(n57) );
-  AO22X1_RVT U59 ( .A1(\mem[1][3] ), .A2(n19), .A3(n18), .A4(n26), .Y(n56) );
-  AO22X1_RVT U60 ( .A1(\mem[1][4] ), .A2(n19), .A3(n18), .A4(n27), .Y(n55) );
-  NAND2X0_RVT U61 ( .A1(n36), .A2(n54), .Y(n21) );
-  OA21X1_RVT U62 ( .A1(n21), .A2(n20), .A3(n35), .Y(n34) );
-  INVX0_RVT U63 ( .A(n34), .Y(n24) );
-  AO22X1_RVT U64 ( .A1(n34), .A2(\mem[0][0] ), .A3(n24), .A4(n22), .Y(n51) );
-  AND2X1_RVT U65 ( .A1(n35), .A2(n24), .Y(n28) );
-  AO22X1_RVT U66 ( .A1(\mem[0][1] ), .A2(n34), .A3(n28), .A4(n23), .Y(n50) );
-  AO221X1_RVT U67 ( .A1(n25), .A2(n24), .A3(n34), .A4(\mem[0][2] ), .A5(rst), 
-        .Y(n49) );
-  AO22X1_RVT U68 ( .A1(\mem[0][3] ), .A2(n34), .A3(n28), .A4(n26), .Y(n48) );
-  AO22X1_RVT U69 ( .A1(\mem[0][4] ), .A2(n34), .A3(n28), .A4(n27), .Y(n47) );
-  AND2X1_RVT U70 ( .A1(mem_read), .A2(n35), .Y(n76) );
-  NOR2X0_RVT U71 ( .A1(rst), .A2(mem_read), .Y(n77) );
-  AO22X1_RVT U72 ( .A1(addr[1]), .A2(n76), .A3(n77), .A4(price[6]), .Y(n43) );
-  AO22X1_RVT U73 ( .A1(addr[0]), .A2(n76), .A3(n77), .A4(price[5]), .Y(n42) );
-  AO22X1_RVT U74 ( .A1(price[4]), .A2(n77), .A3(n76), .A4(n36), .Y(n41) );
-  AO22X1_RVT U75 ( .A1(price[3]), .A2(n77), .A3(n76), .A4(n54), .Y(n40) );
-  INVX0_RVT U76 ( .A(n44), .Y(n45) );
-  AO22X1_RVT U77 ( .A1(n45), .A2(n76), .A3(n77), .A4(price[2]), .Y(n39) );
-  NAND2X0_RVT U78 ( .A1(n52), .A2(n46), .Y(n53) );
-  AO22X1_RVT U79 ( .A1(n76), .A2(n53), .A3(n77), .A4(price[1]), .Y(n38) );
-  AO22X1_RVT U80 ( .A1(price[0]), .A2(n77), .A3(n76), .A4(n54), .Y(n37) );
-  AO22X1_RVT U81 ( .A1(stock[4]), .A2(n77), .A3(n76), .A4(n61), .Y(n33) );
-  AO22X1_RVT U82 ( .A1(stock[3]), .A2(n77), .A3(n76), .A4(n62), .Y(n32) );
-  AO22X1_RVT U83 ( .A1(stock[2]), .A2(n77), .A3(n76), .A4(n68), .Y(n31) );
-  AO22X1_RVT U84 ( .A1(stock[1]), .A2(n77), .A3(n76), .A4(n69), .Y(n30) );
-  AO22X1_RVT U85 ( .A1(stock[0]), .A2(n77), .A3(n76), .A4(n70), .Y(n29) );
-endmodule
-
-
-module comparator ( credit, price, stock, can_sell );
-  input [7:0] credit;
-  input [7:0] price;
-  input [7:0] stock;
-  output can_sell;
-  wire   n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16,
-         n17, n18;
-
-  NAND2X0_RVT U2 ( .A1(n15), .A2(n14), .Y(n17) );
-  INVX0_RVT U3 ( .A(price[1]), .Y(n3) );
-  INVX0_RVT U4 ( .A(credit[0]), .Y(n1) );
-  NAND2X0_RVT U5 ( .A1(price[0]), .A2(n1), .Y(n2) );
-  AO222X1_RVT U6 ( .A1(credit[1]), .A2(n3), .A3(credit[1]), .A4(n2), .A5(n3), 
-        .A6(n2), .Y(n5) );
-  INVX0_RVT U7 ( .A(price[2]), .Y(n4) );
-  AO222X1_RVT U8 ( .A1(credit[2]), .A2(n5), .A3(credit[2]), .A4(n4), .A5(n5), 
-        .A6(n4), .Y(n7) );
-  INVX0_RVT U9 ( .A(price[3]), .Y(n6) );
-  AO222X1_RVT U10 ( .A1(credit[3]), .A2(n7), .A3(credit[3]), .A4(n6), .A5(n7), 
-        .A6(n6), .Y(n9) );
-  INVX0_RVT U11 ( .A(price[4]), .Y(n8) );
-  AO222X1_RVT U12 ( .A1(credit[4]), .A2(n9), .A3(credit[4]), .A4(n8), .A5(n9), 
-        .A6(n8), .Y(n11) );
-  INVX0_RVT U13 ( .A(price[5]), .Y(n10) );
-  AO222X1_RVT U14 ( .A1(credit[5]), .A2(n11), .A3(credit[5]), .A4(n10), .A5(
-        n11), .A6(n10), .Y(n13) );
-  INVX0_RVT U15 ( .A(price[6]), .Y(n12) );
-  AO222X1_RVT U16 ( .A1(credit[6]), .A2(n13), .A3(credit[6]), .A4(n12), .A5(
-        n13), .A6(n12), .Y(n18) );
-  INVX0_RVT U17 ( .A(stock[5]), .Y(n15) );
-  INVX0_RVT U18 ( .A(stock[4]), .Y(n14) );
-  OR4X1_RVT U19 ( .A1(stock[3]), .A2(stock[2]), .A3(stock[1]), .A4(stock[0]), 
-        .Y(n16) );
-  OA22X1_RVT U20 ( .A1(credit[7]), .A2(n18), .A3(n17), .A4(n16), .Y(can_sell)
-         );
-endmodule
-
-
-module subtractor ( credit, price, change );
-  input [7:0] credit;
-  input [7:0] price;
-  output [7:0] change;
-  wire   \intadd_0/B[5] , \intadd_0/B[4] , \intadd_0/B[3] , \intadd_0/B[2] ,
-         \intadd_0/B[1] , \intadd_0/B[0] , \intadd_0/CI , \intadd_0/SUM[5] ,
-         \intadd_0/SUM[4] , \intadd_0/SUM[3] , \intadd_0/SUM[2] ,
-         \intadd_0/SUM[1] , \intadd_0/SUM[0] , \intadd_0/n6 , \intadd_0/n5 ,
-         \intadd_0/n4 , \intadd_0/n3 , \intadd_0/n2 , \intadd_0/n1 , n1;
-
-  FADDX1_RVT \intadd_0/U7  ( .A(\intadd_0/B[0] ), .B(price[1]), .CI(
-        \intadd_0/CI ), .CO(\intadd_0/n6 ), .S(\intadd_0/SUM[0] ) );
-  FADDX1_RVT \intadd_0/U6  ( .A(\intadd_0/B[1] ), .B(price[2]), .CI(
-        \intadd_0/n6 ), .CO(\intadd_0/n5 ), .S(\intadd_0/SUM[1] ) );
-  FADDX1_RVT \intadd_0/U5  ( .A(\intadd_0/B[2] ), .B(price[3]), .CI(
-        \intadd_0/n5 ), .CO(\intadd_0/n4 ), .S(\intadd_0/SUM[2] ) );
-  FADDX1_RVT \intadd_0/U4  ( .A(\intadd_0/B[3] ), .B(price[4]), .CI(
-        \intadd_0/n4 ), .CO(\intadd_0/n3 ), .S(\intadd_0/SUM[3] ) );
-  FADDX1_RVT \intadd_0/U3  ( .A(\intadd_0/B[4] ), .B(price[5]), .CI(
-        \intadd_0/n3 ), .CO(\intadd_0/n2 ), .S(\intadd_0/SUM[4] ) );
-  FADDX1_RVT \intadd_0/U2  ( .A(\intadd_0/B[5] ), .B(price[6]), .CI(
-        \intadd_0/n2 ), .CO(\intadd_0/n1 ), .S(\intadd_0/SUM[5] ) );
-  INVX0_RVT U1 ( .A(\intadd_0/SUM[3] ), .Y(change[4]) );
-  INVX0_RVT U2 ( .A(\intadd_0/SUM[1] ), .Y(change[2]) );
-  INVX0_RVT U3 ( .A(\intadd_0/SUM[5] ), .Y(change[6]) );
-  INVX0_RVT U4 ( .A(\intadd_0/SUM[4] ), .Y(change[5]) );
-  INVX0_RVT U5 ( .A(\intadd_0/SUM[2] ), .Y(change[3]) );
-  INVX0_RVT U6 ( .A(\intadd_0/SUM[0] ), .Y(change[1]) );
-  INVX0_RVT U7 ( .A(price[0]), .Y(n1) );
-  NOR2X0_RVT U8 ( .A1(n1), .A2(credit[0]), .Y(\intadd_0/CI ) );
-  XOR2X1_RVT U9 ( .A1(\intadd_0/n1 ), .A2(credit[7]), .Y(change[7]) );
-  INVX0_RVT U10 ( .A(credit[1]), .Y(\intadd_0/B[0] ) );
-  INVX0_RVT U11 ( .A(credit[2]), .Y(\intadd_0/B[1] ) );
-  INVX0_RVT U12 ( .A(credit[3]), .Y(\intadd_0/B[2] ) );
-  INVX0_RVT U13 ( .A(credit[4]), .Y(\intadd_0/B[3] ) );
-  INVX0_RVT U14 ( .A(credit[5]), .Y(\intadd_0/B[4] ) );
-  INVX0_RVT U15 ( .A(credit[6]), .Y(\intadd_0/B[5] ) );
-  AO21X1_RVT U16 ( .A1(credit[0]), .A2(n1), .A3(\intadd_0/CI ), .Y(change[0])
-         );
-endmodule
 
 
 module vending_top ( clk, rst, coin_in, sel_item, confirm, cancel, dispense, 
@@ -395,62 +14,432 @@ module vending_top ( clk, rst, coin_in, sel_item, confirm, cancel, dispense,
   output [2:0] state_out;
   input clk, rst, confirm, cancel;
   output dispense, error;
-  wire   read_valid, can_sell, credit_load, clear_credit, mem_read, mem_write,
-         change_capture, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16,
-         n17, n18, n19, n20, net1983, net1984, net1985, net1986;
+  wire   read_valid, mem_write, \u_control_unit/N49 , \u_control_unit/N47 ,
+         \u_credit_reg/N65 , \u_credit_reg/N64 , \u_credit_reg/N48 ,
+         \u_credit_reg/N47 , \u_credit_reg/N46 , \u_credit_reg/N45 ,
+         \u_credit_reg/N44 , \u_credit_reg/N43 , \u_credit_reg/N42 ,
+         \u_credit_reg/coin_pending , \u_memory/N61 , \u_memory/mem[0][4] ,
+         \u_memory/mem[0][3] , \u_memory/mem[0][2] , \u_memory/mem[0][1] ,
+         \u_memory/mem[0][0] , \u_memory/mem[1][4] , \u_memory/mem[1][3] ,
+         \u_memory/mem[1][2] , \u_memory/mem[1][1] , \u_memory/mem[1][0] ,
+         \u_memory/mem[2][4] , \u_memory/mem[2][3] , \u_memory/mem[2][2] ,
+         \u_memory/mem[2][1] , \u_memory/mem[2][0] , \u_memory/mem[3][4] ,
+         \u_memory/mem[3][3] , \u_memory/mem[3][2] , \u_memory/mem[3][1] ,
+         \u_memory/mem[3][0] , n84, n85, n86, n87, n88, n89, n90, n91, n92,
+         n93, n94, n95, n96, n97, n98, n99, n100, n101, n102, n104, n105, n106,
+         n107, n111, n112, n113, n114, n115, n119, n120, n121, n122, n123,
+         n127, n128, n129, n130, n131, n135, n136, n137, n138, n139, n143,
+         n144, n145, n146, n147, n148, n149, n150, n151, n152, n153, n154,
+         \C1/Z_6 , \C1/Z_5 , \C1/Z_4 , \C1/Z_3 , \C1/Z_2 , \C1/Z_1 , \C1/Z_0 ,
+         \DP_OP_22J1_122_2962/n8 , \DP_OP_22J1_122_2962/n7 ,
+         \DP_OP_22J1_122_2962/n6 , \DP_OP_22J1_122_2962/n5 ,
+         \DP_OP_22J1_122_2962/n4 , \DP_OP_22J1_122_2962/n3 ,
+         \DP_OP_22J1_122_2962/n2 , \intadd_0/CI , \intadd_0/SUM[4] ,
+         \intadd_0/SUM[3] , \intadd_0/SUM[2] , \intadd_0/SUM[1] ,
+         \intadd_0/SUM[0] , \intadd_0/n5 , \intadd_0/n4 , \intadd_0/n3 ,
+         \intadd_0/n2 , \intadd_0/n1 , n164, n165, n166, n167, n168, n169,
+         n170, n171, n172, n173, n174, n175, n176, n177, n178, n179, n180,
+         n181, n182, n183, n184, n185, n186, n187, n188, n189, n190, n191,
+         n192, n193, n194, n195, n196, n197, n198, n199, n200, n201, n202,
+         n203, n204, n205, n206, n207, n208, n209, n210, n211, n212, n213,
+         n214, n215, n216, n217, n218, n219, n220, n221, n222, n223, n224,
+         n225, n226, n227, n228, n229, n230, n231, n232, n233, n234, n235,
+         n236, n237, n238, n239, n240, n241, n242, n243, n244, n245, n246,
+         n247, n248, n249, n250, n251, n252, n253, n254, n255, n256, n257,
+         n258, n259, n260, n262, n263, n264, n265, n266, n267, n268, n269,
+         n270, n271, n272, n273, n274, n275, n276, n277, n278, n279, n280,
+         n281;
   wire   [7:0] price;
   wire   [7:0] stock;
-  wire   [7:0] change;
-  wire   SYNOPSYS_UNCONNECTED__0, SYNOPSYS_UNCONNECTED__1, 
-        SYNOPSYS_UNCONNECTED__2;
+  wire   [7:0] \u_credit_reg/pending_coin_value ;
+  wire   [1:0] \u_credit_reg/coin_in_q ;
+  assign dispense = mem_write;
 
-  control_unit u_control_unit ( .clk(clk), .rst(rst), .cancel(cancel), 
-        .coin_in(coin_in), .confirm(confirm), .read_valid(read_valid), 
-        .can_sell(can_sell), .credit_load(credit_load), .clear_credit(
-        clear_credit), .mem_read(mem_read), .mem_write(mem_write), .dispense(
-        dispense), .error(error), .change_capture(change_capture), .state_out(
-        state_out) );
-  credit_reg u_credit_reg ( .clk(clk), .rst(rst), .cancel(cancel), 
-        .credit_load(credit_load), .clear_credit(clear_credit), .coin_in(
-        coin_in), .credit(display) );
-  vending_memory u_memory ( .clk(clk), .rst(rst), .mem_read(mem_read), 
-        .mem_write(mem_write), .addr({sel_item[1], n15}), .price({
-        SYNOPSYS_UNCONNECTED__0, price[6:0]}), .stock({SYNOPSYS_UNCONNECTED__1, 
-        SYNOPSYS_UNCONNECTED__2, stock[5:0]}), .read_valid(read_valid) );
-  comparator u_comparator ( .credit(display), .price({net1984, price[6:0]}), 
-        .stock({net1985, net1986, stock[5:0]}), .can_sell(can_sell) );
-  subtractor u_subtractor ( .credit(display), .price({net1983, price[6:0]}), 
-        .change(change) );
-  DFFX1_RVT \change_out_reg[7]  ( .D(n13), .CLK(clk), .Q(change_out[7]) );
-  DFFX1_RVT \change_out_reg[6]  ( .D(n12), .CLK(clk), .Q(change_out[6]) );
-  DFFX1_RVT \change_out_reg[5]  ( .D(n11), .CLK(clk), .Q(change_out[5]) );
-  DFFX1_RVT \change_out_reg[4]  ( .D(n10), .CLK(clk), .Q(change_out[4]) );
-  DFFX1_RVT \change_out_reg[3]  ( .D(n9), .CLK(clk), .Q(change_out[3]) );
-  DFFX1_RVT \change_out_reg[2]  ( .D(n8), .CLK(clk), .Q(change_out[2]) );
-  DFFX1_RVT \change_out_reg[1]  ( .D(n7), .CLK(clk), .Q(change_out[1]) );
-  DFFX1_RVT \change_out_reg[0]  ( .D(n6), .CLK(clk), .Q(change_out[0]) );
-  INVX0_RVT U16 ( .A(sel_item[0]), .Y(n14) );
-  INVX4_RVT U17 ( .A(n14), .Y(n15) );
-  NOR3X0_RVT U18 ( .A1(change_capture), .A2(rst), .A3(cancel), .Y(n20) );
-  INVX0_RVT U19 ( .A(rst), .Y(n17) );
-  INVX0_RVT U20 ( .A(cancel), .Y(n16) );
-  AND3X1_RVT U21 ( .A1(change_capture), .A2(n17), .A3(n16), .Y(n18) );
-  AND2X1_RVT U22 ( .A1(cancel), .A2(n17), .Y(n19) );
-  AO222X1_RVT U23 ( .A1(n20), .A2(change_out[7]), .A3(n18), .A4(change[7]), 
-        .A5(n19), .A6(display[7]), .Y(n13) );
-  AO222X1_RVT U24 ( .A1(n20), .A2(change_out[6]), .A3(n19), .A4(display[6]), 
-        .A5(change[6]), .A6(n18), .Y(n12) );
-  AO222X1_RVT U25 ( .A1(n20), .A2(change_out[5]), .A3(n19), .A4(display[5]), 
-        .A5(change[5]), .A6(n18), .Y(n11) );
-  AO222X1_RVT U26 ( .A1(n20), .A2(change_out[4]), .A3(n19), .A4(display[4]), 
-        .A5(change[4]), .A6(n18), .Y(n10) );
-  AO222X1_RVT U27 ( .A1(n20), .A2(change_out[3]), .A3(n19), .A4(display[3]), 
-        .A5(change[3]), .A6(n18), .Y(n9) );
-  AO222X1_RVT U28 ( .A1(n20), .A2(change_out[2]), .A3(n19), .A4(display[2]), 
-        .A5(change[2]), .A6(n18), .Y(n8) );
-  AO222X1_RVT U29 ( .A1(n20), .A2(change_out[1]), .A3(n19), .A4(display[1]), 
-        .A5(change[1]), .A6(n18), .Y(n7) );
-  AO222X1_RVT U30 ( .A1(n20), .A2(change_out[0]), .A3(n19), .A4(display[0]), 
-        .A5(change[0]), .A6(n18), .Y(n6) );
+  DFFX1_RVT \u_memory/read_valid_reg  ( .D(\u_memory/N61 ), .CLK(clk), .Q(
+        read_valid) );
+  DFFX1_RVT \u_control_unit/state_q_reg[2]  ( .D(\u_control_unit/N49 ), .CLK(
+        clk), .Q(state_out[2]), .QN(n262) );
+  DFFX1_RVT \u_control_unit/state_q_reg[0]  ( .D(\u_control_unit/N47 ), .CLK(
+        clk), .Q(state_out[0]), .QN(n274) );
+  DFFX1_RVT \u_memory/price_reg[0]  ( .D(n154), .CLK(clk), .Q(price[0]), .QN(
+        n266) );
+  DFFX1_RVT \u_memory/price_reg[1]  ( .D(n153), .CLK(clk), .Q(price[1]), .QN(
+        n267) );
+  DFFX1_RVT \u_memory/price_reg[2]  ( .D(n152), .CLK(clk), .Q(price[2]), .QN(
+        n268) );
+  DFFX1_RVT \u_memory/price_reg[3]  ( .D(n151), .CLK(clk), .Q(price[3]), .QN(
+        n270) );
+  DFFX1_RVT \u_memory/price_reg[4]  ( .D(n150), .CLK(clk), .Q(price[4]), .QN(
+        n271) );
+  DFFX1_RVT \u_memory/price_reg[5]  ( .D(n149), .CLK(clk), .Q(price[5]), .QN(
+        n272) );
+  DFFX1_RVT \u_memory/price_reg[6]  ( .D(n148), .CLK(clk), .Q(price[6]), .QN(
+        n275) );
+  DFFX1_RVT \u_credit_reg/coin_in_q_reg[0]  ( .D(\u_credit_reg/N64 ), .CLK(clk), .Q(\u_credit_reg/coin_in_q [0]) );
+  DFFX1_RVT \u_credit_reg/coin_in_q_reg[1]  ( .D(\u_credit_reg/N65 ), .CLK(clk), .Q(\u_credit_reg/coin_in_q [1]) );
+  DFFX1_RVT \u_credit_reg/pending_coin_value_reg[0]  ( .D(n107), .CLK(clk), 
+        .Q(\u_credit_reg/pending_coin_value [0]) );
+  DFFX1_RVT \u_credit_reg/pending_coin_value_reg[3]  ( .D(n104), .CLK(clk), 
+        .Q(\u_credit_reg/pending_coin_value [3]) );
+  DFFX1_RVT \u_credit_reg/pending_coin_value_reg[5]  ( .D(n102), .CLK(clk), 
+        .Q(\u_credit_reg/pending_coin_value [5]), .QN(n276) );
+  DFFX1_RVT \u_credit_reg/pending_coin_value_reg[1]  ( .D(n106), .CLK(clk), 
+        .Q(\u_credit_reg/pending_coin_value [1]), .QN(n269) );
+  DFFX1_RVT \u_credit_reg/pending_coin_value_reg[2]  ( .D(n105), .CLK(clk), 
+        .Q(\u_credit_reg/pending_coin_value [2]), .QN(n277) );
+  DFFX1_RVT \u_credit_reg/pending_coin_value_reg[6]  ( .D(n101), .CLK(clk), 
+        .Q(\u_credit_reg/pending_coin_value [6]) );
+  DFFX1_RVT \u_credit_reg/coin_pending_reg  ( .D(n100), .CLK(clk), .Q(
+        \u_credit_reg/coin_pending ), .QN(n264) );
+  DFFX1_RVT \u_credit_reg/credit_reg[0]  ( .D(n99), .CLK(clk), .Q(display[0])
+         );
+  DFFX1_RVT \u_credit_reg/credit_reg[7]  ( .D(n98), .CLK(clk), .Q(display[7])
+         );
+  DFFX1_RVT \u_credit_reg/credit_reg[6]  ( .D(n97), .CLK(clk), .Q(display[6])
+         );
+  DFFX1_RVT \u_credit_reg/credit_reg[5]  ( .D(n96), .CLK(clk), .Q(display[5])
+         );
+  DFFX1_RVT \u_credit_reg/credit_reg[4]  ( .D(n95), .CLK(clk), .Q(display[4])
+         );
+  DFFX1_RVT \u_credit_reg/credit_reg[3]  ( .D(n94), .CLK(clk), .Q(display[3])
+         );
+  DFFX1_RVT \u_credit_reg/credit_reg[2]  ( .D(n93), .CLK(clk), .Q(display[2])
+         );
+  DFFX1_RVT \u_credit_reg/credit_reg[1]  ( .D(n92), .CLK(clk), .Q(display[1])
+         );
+  DFFX1_RVT \u_memory/mem_reg[3][1]  ( .D(n138), .CLK(clk), .Q(
+        \u_memory/mem[3][1] ) );
+  DFFX1_RVT \u_memory/mem_reg[3][0]  ( .D(n139), .CLK(clk), .Q(
+        \u_memory/mem[3][0] ) );
+  DFFX1_RVT \u_memory/mem_reg[3][2]  ( .D(n137), .CLK(clk), .Q(
+        \u_memory/mem[3][2] ) );
+  DFFX1_RVT \u_memory/mem_reg[3][3]  ( .D(n136), .CLK(clk), .Q(
+        \u_memory/mem[3][3] ) );
+  DFFX1_RVT \u_memory/mem_reg[3][4]  ( .D(n135), .CLK(clk), .Q(
+        \u_memory/mem[3][4] ) );
+  DFFX1_RVT \u_memory/mem_reg[2][0]  ( .D(n131), .CLK(clk), .Q(
+        \u_memory/mem[2][0] ) );
+  DFFX1_RVT \u_memory/mem_reg[2][1]  ( .D(n130), .CLK(clk), .Q(
+        \u_memory/mem[2][1] ) );
+  DFFX1_RVT \u_memory/mem_reg[2][2]  ( .D(n129), .CLK(clk), .Q(
+        \u_memory/mem[2][2] ) );
+  DFFX1_RVT \u_memory/mem_reg[2][3]  ( .D(n128), .CLK(clk), .Q(
+        \u_memory/mem[2][3] ) );
+  DFFX1_RVT \u_memory/mem_reg[2][4]  ( .D(n127), .CLK(clk), .Q(
+        \u_memory/mem[2][4] ) );
+  DFFX1_RVT \u_memory/mem_reg[1][0]  ( .D(n123), .CLK(clk), .Q(
+        \u_memory/mem[1][0] ) );
+  DFFX1_RVT \u_memory/mem_reg[1][2]  ( .D(n121), .CLK(clk), .Q(
+        \u_memory/mem[1][2] ) );
+  DFFX1_RVT \u_memory/mem_reg[1][1]  ( .D(n122), .CLK(clk), .Q(
+        \u_memory/mem[1][1] ) );
+  DFFX1_RVT \u_memory/mem_reg[1][3]  ( .D(n120), .CLK(clk), .Q(
+        \u_memory/mem[1][3] ) );
+  DFFX1_RVT \u_memory/mem_reg[1][4]  ( .D(n119), .CLK(clk), .Q(
+        \u_memory/mem[1][4] ) );
+  DFFX1_RVT \u_memory/mem_reg[0][0]  ( .D(n115), .CLK(clk), .Q(
+        \u_memory/mem[0][0] ) );
+  DFFX1_RVT \u_memory/stock_reg[0]  ( .D(n147), .CLK(clk), .Q(stock[0]) );
+  DFFX1_RVT \u_memory/mem_reg[0][2]  ( .D(n113), .CLK(clk), .Q(
+        \u_memory/mem[0][2] ) );
+  DFFX1_RVT \u_memory/stock_reg[2]  ( .D(n145), .CLK(clk), .Q(stock[2]) );
+  DFFX1_RVT \u_memory/mem_reg[0][1]  ( .D(n114), .CLK(clk), .Q(
+        \u_memory/mem[0][1] ) );
+  DFFX1_RVT \u_memory/stock_reg[1]  ( .D(n146), .CLK(clk), .Q(stock[1]) );
+  DFFX1_RVT \u_memory/mem_reg[0][3]  ( .D(n112), .CLK(clk), .Q(
+        \u_memory/mem[0][3] ) );
+  DFFX1_RVT \u_memory/stock_reg[3]  ( .D(n144), .CLK(clk), .Q(stock[3]) );
+  DFFX1_RVT \u_memory/mem_reg[0][4]  ( .D(n111), .CLK(clk), .Q(
+        \u_memory/mem[0][4] ) );
+  DFFX1_RVT \u_memory/stock_reg[4]  ( .D(n143), .CLK(clk), .Q(stock[4]), .QN(
+        n265) );
+  DFFX1_RVT \change_out_reg[0]  ( .D(n91), .CLK(clk), .Q(change_out[0]) );
+  DFFX1_RVT \change_out_reg[1]  ( .D(n90), .CLK(clk), .Q(change_out[1]) );
+  DFFX1_RVT \change_out_reg[2]  ( .D(n89), .CLK(clk), .Q(change_out[2]) );
+  DFFX1_RVT \change_out_reg[3]  ( .D(n88), .CLK(clk), .Q(change_out[3]) );
+  DFFX1_RVT \change_out_reg[4]  ( .D(n87), .CLK(clk), .Q(change_out[4]) );
+  DFFX1_RVT \change_out_reg[5]  ( .D(n86), .CLK(clk), .Q(change_out[5]) );
+  DFFX1_RVT \change_out_reg[6]  ( .D(n85), .CLK(clk), .Q(change_out[6]) );
+  DFFX1_RVT \change_out_reg[7]  ( .D(n84), .CLK(clk), .Q(change_out[7]) );
+  HADDX1_RVT \DP_OP_22J1_122_2962/U9  ( .A0(\C1/Z_0 ), .B0(display[0]), .C1(
+        \DP_OP_22J1_122_2962/n8 ), .SO(\u_credit_reg/N42 ) );
+  FADDX1_RVT \DP_OP_22J1_122_2962/U8  ( .A(\C1/Z_1 ), .B(display[1]), .CI(
+        \DP_OP_22J1_122_2962/n8 ), .CO(\DP_OP_22J1_122_2962/n7 ), .S(
+        \u_credit_reg/N43 ) );
+  FADDX1_RVT \DP_OP_22J1_122_2962/U7  ( .A(\C1/Z_2 ), .B(display[2]), .CI(
+        \DP_OP_22J1_122_2962/n7 ), .CO(\DP_OP_22J1_122_2962/n6 ), .S(
+        \u_credit_reg/N44 ) );
+  FADDX1_RVT \DP_OP_22J1_122_2962/U6  ( .A(\C1/Z_3 ), .B(display[3]), .CI(
+        \DP_OP_22J1_122_2962/n6 ), .CO(\DP_OP_22J1_122_2962/n5 ), .S(
+        \u_credit_reg/N45 ) );
+  FADDX1_RVT \DP_OP_22J1_122_2962/U5  ( .A(\C1/Z_4 ), .B(display[4]), .CI(
+        \DP_OP_22J1_122_2962/n5 ), .CO(\DP_OP_22J1_122_2962/n4 ), .S(
+        \u_credit_reg/N46 ) );
+  FADDX1_RVT \DP_OP_22J1_122_2962/U4  ( .A(\C1/Z_5 ), .B(display[5]), .CI(
+        \DP_OP_22J1_122_2962/n4 ), .CO(\DP_OP_22J1_122_2962/n3 ), .S(
+        \u_credit_reg/N47 ) );
+  FADDX1_RVT \DP_OP_22J1_122_2962/U3  ( .A(\C1/Z_6 ), .B(display[6]), .CI(
+        \DP_OP_22J1_122_2962/n3 ), .CO(\DP_OP_22J1_122_2962/n2 ), .S(
+        \u_credit_reg/N48 ) );
+  FADDX1_RVT \intadd_0/U6  ( .A(display[2]), .B(n268), .CI(\intadd_0/CI ), 
+        .CO(\intadd_0/n5 ), .S(\intadd_0/SUM[0] ) );
+  FADDX1_RVT \intadd_0/U5  ( .A(display[3]), .B(n270), .CI(\intadd_0/n5 ), 
+        .CO(\intadd_0/n4 ), .S(\intadd_0/SUM[1] ) );
+  FADDX1_RVT \intadd_0/U4  ( .A(display[4]), .B(n271), .CI(\intadd_0/n4 ), 
+        .CO(\intadd_0/n3 ), .S(\intadd_0/SUM[2] ) );
+  FADDX1_RVT \intadd_0/U3  ( .A(display[5]), .B(n272), .CI(\intadd_0/n3 ), 
+        .CO(\intadd_0/n2 ), .S(\intadd_0/SUM[3] ) );
+  FADDX1_RVT \intadd_0/U2  ( .A(display[6]), .B(n275), .CI(\intadd_0/n2 ), 
+        .CO(\intadd_0/n1 ), .S(\intadd_0/SUM[4] ) );
+  DFFSSRX1_RVT \u_credit_reg/pending_coin_value_reg[4]  ( .D(n279), .SETB(n164), .RSTB(n278), .CLK(clk), .Q(n273) );
+  DFFSSRX1_RVT \u_control_unit/state_q_reg[1]  ( .D(n281), .SETB(1'b1), .RSTB(
+        n280), .CLK(clk), .Q(state_out[1]), .QN(n263) );
+  NOR2X0_RVT U179 ( .A1(n178), .A2(n182), .Y(n164) );
+  INVX0_RVT U180 ( .A(n183), .Y(n172) );
+  OR2X1_RVT U181 ( .A1(\u_credit_reg/coin_pending ), .A2(n176), .Y(n183) );
+  OR2X1_RVT U182 ( .A1(n266), .A2(display[0]), .Y(n249) );
+  OR2X1_RVT U183 ( .A1(n171), .A2(n174), .Y(\C1/Z_2 ) );
+  INVX0_RVT U184 ( .A(confirm), .Y(n203) );
+  INVX0_RVT U185 ( .A(n249), .Y(n251) );
+  INVX0_RVT U186 ( .A(n247), .Y(n242) );
+  OA21X1_RVT U187 ( .A1(n210), .A2(n238), .A3(n255), .Y(n226) );
+  XOR2X1_RVT U188 ( .A1(\DP_OP_22J1_122_2962/n2 ), .A2(display[7]), .Y(n177)
+         );
+  AND2X1_RVT U189 ( .A1(n255), .A2(n206), .Y(n209) );
+  NOR2X0_RVT U190 ( .A1(rst), .A2(cancel), .Y(n281) );
+  OAI21X1_RVT U191 ( .A1(n277), .A2(n185), .A3(n169), .Y(n105) );
+  AND2X1_RVT U192 ( .A1(n199), .A2(n255), .Y(\u_memory/N61 ) );
+  INVX1_RVT U193 ( .A(n248), .Y(mem_write) );
+  NAND3X0_RVT U195 ( .A1(n274), .A2(state_out[2]), .A3(n263), .Y(n165) );
+  NAND2X0_RVT U196 ( .A1(n281), .A2(n165), .Y(n178) );
+  INVX0_RVT U197 ( .A(coin_in[0]), .Y(n187) );
+  AND2X1_RVT U198 ( .A1(n187), .A2(coin_in[1]), .Y(n166) );
+  NOR2X0_RVT U199 ( .A1(coin_in[1]), .A2(n187), .Y(n184) );
+  NOR2X0_RVT U200 ( .A1(n166), .A2(n184), .Y(n182) );
+  NAND3X0_RVT U201 ( .A1(state_out[0]), .A2(state_out[1]), .A3(n262), .Y(n248)
+         );
+  NAND3X0_RVT U202 ( .A1(state_out[1]), .A2(n262), .A3(n274), .Y(n206) );
+  INVX0_RVT U203 ( .A(n206), .Y(n199) );
+  INVX0_RVT U204 ( .A(rst), .Y(n255) );
+  INVX0_RVT U205 ( .A(coin_in[1]), .Y(n170) );
+  NAND2X0_RVT U206 ( .A1(n170), .A2(n187), .Y(n197) );
+  INVX0_RVT U207 ( .A(n197), .Y(n167) );
+  OR3X1_RVT U208 ( .A1(\u_credit_reg/coin_in_q [1]), .A2(n167), .A3(
+        \u_credit_reg/coin_in_q [0]), .Y(n176) );
+  NAND3X0_RVT U209 ( .A1(state_out[0]), .A2(n262), .A3(n263), .Y(n202) );
+  INVX0_RVT U210 ( .A(n202), .Y(n179) );
+  NOR2X0_RVT U211 ( .A1(n176), .A2(n179), .Y(n168) );
+  OR2X1_RVT U212 ( .A1(n168), .A2(n178), .Y(n185) );
+  INVX0_RVT U213 ( .A(n185), .Y(n279) );
+  INVX0_RVT U214 ( .A(n178), .Y(n196) );
+  AND2X1_RVT U215 ( .A1(coin_in[1]), .A2(n196), .Y(\u_credit_reg/N65 ) );
+  AND2X1_RVT U216 ( .A1(\u_credit_reg/N65 ), .A2(n185), .Y(n188) );
+  AND2X1_RVT U217 ( .A1(n188), .A2(coin_in[0]), .Y(n181) );
+  INVX0_RVT U218 ( .A(n181), .Y(n169) );
+  AND2X1_RVT U219 ( .A1(\u_credit_reg/coin_pending ), .A2(
+        \u_credit_reg/pending_coin_value [2]), .Y(n171) );
+  OR2X1_RVT U220 ( .A1(n170), .A2(n183), .Y(n189) );
+  NOR2X0_RVT U221 ( .A1(n189), .A2(n187), .Y(n174) );
+  AND2X1_RVT U222 ( .A1(\u_credit_reg/coin_pending ), .A2(
+        \u_credit_reg/pending_coin_value [3]), .Y(n173) );
+  AND2X1_RVT U223 ( .A1(n184), .A2(n172), .Y(n192) );
+  OR2X1_RVT U224 ( .A1(n173), .A2(n192), .Y(\C1/Z_3 ) );
+  OAI21X1_RVT U225 ( .A1(n264), .A2(n276), .A3(n189), .Y(\C1/Z_5 ) );
+  AND2X1_RVT U226 ( .A1(\u_credit_reg/coin_pending ), .A2(
+        \u_credit_reg/pending_coin_value [6]), .Y(n175) );
+  OR2X1_RVT U227 ( .A1(n175), .A2(n174), .Y(\C1/Z_6 ) );
+  AND2X1_RVT U228 ( .A1(n176), .A2(n264), .Y(n180) );
+  OA21X1_RVT U229 ( .A1(n202), .A2(n180), .A3(n196), .Y(n195) );
+  NOR2X0_RVT U230 ( .A1(n178), .A2(n195), .Y(n194) );
+  AO22X1_RVT U231 ( .A1(n195), .A2(display[7]), .A3(n177), .A4(n194), .Y(n98)
+         );
+  AO22X1_RVT U232 ( .A1(n195), .A2(display[5]), .A3(\u_credit_reg/N47 ), .A4(
+        n194), .Y(n96) );
+  AO22X1_RVT U233 ( .A1(n195), .A2(display[4]), .A3(\u_credit_reg/N46 ), .A4(
+        n194), .Y(n95) );
+  AO22X1_RVT U234 ( .A1(n195), .A2(display[3]), .A3(\u_credit_reg/N45 ), .A4(
+        n194), .Y(n94) );
+  AO22X1_RVT U235 ( .A1(n195), .A2(display[2]), .A3(\u_credit_reg/N44 ), .A4(
+        n194), .Y(n93) );
+  AO22X1_RVT U236 ( .A1(n195), .A2(display[1]), .A3(\u_credit_reg/N43 ), .A4(
+        n194), .Y(n92) );
+  AO22X1_RVT U237 ( .A1(n195), .A2(display[0]), .A3(\u_credit_reg/N42 ), .A4(
+        n194), .Y(n99) );
+  NOR3X0_RVT U238 ( .A1(n180), .A2(n179), .A3(n178), .Y(n100) );
+  AO21X1_RVT U239 ( .A1(\u_credit_reg/pending_coin_value [6]), .A2(n279), .A3(
+        n181), .Y(n101) );
+  AO21X1_RVT U240 ( .A1(n279), .A2(\u_credit_reg/pending_coin_value [5]), .A3(
+        n188), .Y(n102) );
+  OR2X1_RVT U241 ( .A1(n273), .A2(n185), .Y(n278) );
+  OAI22X1_RVT U242 ( .A1(n264), .A2(n273), .A3(n183), .A4(n182), .Y(\C1/Z_4 )
+         );
+  AND2X1_RVT U243 ( .A1(n279), .A2(\u_credit_reg/pending_coin_value [3]), .Y(
+        n186) );
+  AND3X1_RVT U244 ( .A1(n185), .A2(n196), .A3(n184), .Y(n190) );
+  OR2X1_RVT U245 ( .A1(n186), .A2(n190), .Y(n104) );
+  AO22X1_RVT U246 ( .A1(n188), .A2(n187), .A3(n279), .A4(
+        \u_credit_reg/pending_coin_value [1]), .Y(n106) );
+  OAI22X1_RVT U247 ( .A1(n269), .A2(n264), .A3(coin_in[0]), .A4(n189), .Y(
+        \C1/Z_1 ) );
+  AND2X1_RVT U248 ( .A1(n279), .A2(\u_credit_reg/pending_coin_value [0]), .Y(
+        n191) );
+  OR2X1_RVT U249 ( .A1(n191), .A2(n190), .Y(n107) );
+  AND2X1_RVT U250 ( .A1(\u_credit_reg/coin_pending ), .A2(
+        \u_credit_reg/pending_coin_value [0]), .Y(n193) );
+  OR2X1_RVT U251 ( .A1(n193), .A2(n192), .Y(\C1/Z_0 ) );
+  AO22X1_RVT U252 ( .A1(n195), .A2(display[6]), .A3(\u_credit_reg/N48 ), .A4(
+        n194), .Y(n97) );
+  AND2X1_RVT U253 ( .A1(coin_in[0]), .A2(n196), .Y(\u_credit_reg/N64 ) );
+  AND3X1_RVT U254 ( .A1(state_out[0]), .A2(state_out[2]), .A3(n263), .Y(error)
+         );
+  OA222X1_RVT U255 ( .A1(state_out[0]), .A2(n262), .A3(state_out[0]), .A4(n197), .A5(n203), .A6(n274), .Y(n198) );
+  AO22X1_RVT U256 ( .A1(n199), .A2(read_valid), .A3(n198), .A4(n263), .Y(n200)
+         );
+  OA21X1_RVT U257 ( .A1(error), .A2(n200), .A3(n281), .Y(\u_control_unit/N47 )
+         );
+  AO222X1_RVT U258 ( .A1(display[1]), .A2(n249), .A3(display[1]), .A4(n267), 
+        .A5(n249), .A6(n267), .Y(\intadd_0/CI ) );
+  NOR2X0_RVT U259 ( .A1(\intadd_0/n1 ), .A2(display[7]), .Y(n257) );
+  NOR4X1_RVT U260 ( .A1(stock[3]), .A2(stock[2]), .A3(stock[1]), .A4(stock[0]), 
+        .Y(n201) );
+  OA221X1_RVT U261 ( .A1(n257), .A2(n201), .A3(n257), .A4(n265), .A5(
+        read_valid), .Y(n204) );
+  OAI22X1_RVT U262 ( .A1(n203), .A2(n202), .A3(n206), .A4(n204), .Y(n280) );
+  AND3X1_RVT U263 ( .A1(state_out[1]), .A2(n204), .A3(n262), .Y(n205) );
+  AND2X1_RVT U264 ( .A1(mem_write), .A2(n281), .Y(n258) );
+  AO221X1_RVT U265 ( .A1(n281), .A2(n205), .A3(n281), .A4(error), .A5(n258), 
+        .Y(\u_control_unit/N49 ) );
+  INVX0_RVT U266 ( .A(sel_item[0]), .Y(n237) );
+  AO22X1_RVT U267 ( .A1(n209), .A2(price[0]), .A3(\u_memory/N61 ), .A4(n237), 
+        .Y(n154) );
+  NAND2X0_RVT U268 ( .A1(n237), .A2(sel_item[1]), .Y(n227) );
+  INVX0_RVT U269 ( .A(sel_item[1]), .Y(n236) );
+  NAND2X0_RVT U270 ( .A1(sel_item[0]), .A2(n236), .Y(n232) );
+  NAND2X0_RVT U271 ( .A1(n227), .A2(n232), .Y(n207) );
+  AO22X1_RVT U272 ( .A1(\u_memory/N61 ), .A2(n207), .A3(n209), .A4(price[1]), 
+        .Y(n153) );
+  NAND2X0_RVT U273 ( .A1(sel_item[0]), .A2(sel_item[1]), .Y(n210) );
+  INVX0_RVT U274 ( .A(n210), .Y(n208) );
+  AO22X1_RVT U275 ( .A1(n208), .A2(\u_memory/N61 ), .A3(n209), .A4(price[2]), 
+        .Y(n152) );
+  AO22X1_RVT U276 ( .A1(price[3]), .A2(n209), .A3(\u_memory/N61 ), .A4(n237), 
+        .Y(n151) );
+  AO22X1_RVT U277 ( .A1(price[4]), .A2(n209), .A3(\u_memory/N61 ), .A4(n236), 
+        .Y(n150) );
+  AO22X1_RVT U278 ( .A1(sel_item[0]), .A2(\u_memory/N61 ), .A3(n209), .A4(
+        price[5]), .Y(n149) );
+  AO22X1_RVT U279 ( .A1(sel_item[1]), .A2(\u_memory/N61 ), .A3(n209), .A4(
+        price[6]), .Y(n148) );
+  MUX41X1_RVT U280 ( .A1(\u_memory/mem[0][0] ), .A3(\u_memory/mem[1][0] ), 
+        .A2(\u_memory/mem[2][0] ), .A4(\u_memory/mem[3][0] ), .S0(sel_item[0]), 
+        .S1(sel_item[1]), .Y(n228) );
+  AO22X1_RVT U281 ( .A1(n209), .A2(stock[0]), .A3(\u_memory/N61 ), .A4(n228), 
+        .Y(n147) );
+  MUX41X1_RVT U282 ( .A1(\u_memory/mem[0][1] ), .A3(\u_memory/mem[1][1] ), 
+        .A2(\u_memory/mem[2][1] ), .A4(\u_memory/mem[3][1] ), .S0(sel_item[0]), 
+        .S1(sel_item[1]), .Y(n213) );
+  AO22X1_RVT U283 ( .A1(n209), .A2(stock[1]), .A3(\u_memory/N61 ), .A4(n213), 
+        .Y(n146) );
+  MUX41X1_RVT U284 ( .A1(\u_memory/mem[0][2] ), .A3(\u_memory/mem[1][2] ), 
+        .A2(\u_memory/mem[2][2] ), .A4(\u_memory/mem[3][2] ), .S0(sel_item[0]), 
+        .S1(sel_item[1]), .Y(n216) );
+  AO22X1_RVT U285 ( .A1(n209), .A2(stock[2]), .A3(\u_memory/N61 ), .A4(n216), 
+        .Y(n145) );
+  MUX41X1_RVT U286 ( .A1(\u_memory/mem[0][3] ), .A3(\u_memory/mem[1][3] ), 
+        .A2(\u_memory/mem[2][3] ), .A4(\u_memory/mem[3][3] ), .S0(sel_item[0]), 
+        .S1(sel_item[1]), .Y(n219) );
+  AO22X1_RVT U287 ( .A1(n209), .A2(stock[3]), .A3(\u_memory/N61 ), .A4(n219), 
+        .Y(n144) );
+  MUX41X1_RVT U288 ( .A1(\u_memory/mem[0][4] ), .A3(\u_memory/mem[1][4] ), 
+        .A2(\u_memory/mem[2][4] ), .A4(\u_memory/mem[3][4] ), .S0(sel_item[0]), 
+        .S1(sel_item[1]), .Y(n222) );
+  AO22X1_RVT U289 ( .A1(n209), .A2(stock[4]), .A3(\u_memory/N61 ), .A4(n222), 
+        .Y(n143) );
+  OR2X1_RVT U290 ( .A1(n228), .A2(n213), .Y(n217) );
+  OR2X1_RVT U291 ( .A1(n217), .A2(n216), .Y(n220) );
+  OR2X1_RVT U292 ( .A1(n220), .A2(n219), .Y(n223) );
+  OR2X1_RVT U293 ( .A1(n223), .A2(n222), .Y(n224) );
+  NAND2X0_RVT U294 ( .A1(n224), .A2(mem_write), .Y(n238) );
+  INVX0_RVT U295 ( .A(n228), .Y(n211) );
+  INVX0_RVT U296 ( .A(n226), .Y(n214) );
+  AND2X1_RVT U297 ( .A1(n255), .A2(n214), .Y(n225) );
+  AO22X1_RVT U298 ( .A1(\u_memory/mem[3][0] ), .A2(n226), .A3(n211), .A4(n225), 
+        .Y(n139) );
+  INVX0_RVT U299 ( .A(n217), .Y(n212) );
+  AO21X1_RVT U300 ( .A1(n228), .A2(n213), .A3(n212), .Y(n241) );
+  AO221X1_RVT U301 ( .A1(n241), .A2(n214), .A3(n226), .A4(\u_memory/mem[3][1] ), .A5(rst), .Y(n138) );
+  INVX0_RVT U302 ( .A(n220), .Y(n215) );
+  AO21X1_RVT U303 ( .A1(n217), .A2(n216), .A3(n215), .Y(n243) );
+  AO22X1_RVT U304 ( .A1(\u_memory/mem[3][2] ), .A2(n226), .A3(n225), .A4(n243), 
+        .Y(n137) );
+  INVX0_RVT U305 ( .A(n223), .Y(n218) );
+  AO21X1_RVT U306 ( .A1(n220), .A2(n219), .A3(n218), .Y(n244) );
+  AO22X1_RVT U307 ( .A1(\u_memory/mem[3][3] ), .A2(n226), .A3(n225), .A4(n244), 
+        .Y(n136) );
+  INVX0_RVT U308 ( .A(n224), .Y(n221) );
+  AO21X1_RVT U309 ( .A1(n223), .A2(n222), .A3(n221), .Y(n245) );
+  AO22X1_RVT U310 ( .A1(\u_memory/mem[3][4] ), .A2(n226), .A3(n225), .A4(n245), 
+        .Y(n135) );
+  OA21X1_RVT U311 ( .A1(n227), .A2(n238), .A3(n255), .Y(n231) );
+  INVX0_RVT U312 ( .A(n231), .Y(n229) );
+  NAND2X0_RVT U313 ( .A1(n228), .A2(n255), .Y(n240) );
+  AO22X1_RVT U314 ( .A1(n231), .A2(\u_memory/mem[2][0] ), .A3(n229), .A4(n240), 
+        .Y(n131) );
+  AO221X1_RVT U315 ( .A1(n241), .A2(n229), .A3(n231), .A4(\u_memory/mem[2][1] ), .A5(rst), .Y(n130) );
+  AND2X1_RVT U316 ( .A1(n255), .A2(n229), .Y(n230) );
+  AO22X1_RVT U317 ( .A1(\u_memory/mem[2][2] ), .A2(n231), .A3(n230), .A4(n243), 
+        .Y(n129) );
+  AO22X1_RVT U318 ( .A1(\u_memory/mem[2][3] ), .A2(n231), .A3(n230), .A4(n244), 
+        .Y(n128) );
+  AO22X1_RVT U319 ( .A1(\u_memory/mem[2][4] ), .A2(n231), .A3(n230), .A4(n245), 
+        .Y(n127) );
+  OA21X1_RVT U320 ( .A1(n232), .A2(n238), .A3(n255), .Y(n235) );
+  INVX0_RVT U321 ( .A(n235), .Y(n233) );
+  AO22X1_RVT U322 ( .A1(n235), .A2(\u_memory/mem[1][0] ), .A3(n233), .A4(n240), 
+        .Y(n123) );
+  AND2X1_RVT U323 ( .A1(n255), .A2(n233), .Y(n234) );
+  AO22X1_RVT U324 ( .A1(\u_memory/mem[1][1] ), .A2(n235), .A3(n234), .A4(n241), 
+        .Y(n122) );
+  AO221X1_RVT U325 ( .A1(n243), .A2(n233), .A3(n235), .A4(\u_memory/mem[1][2] ), .A5(rst), .Y(n121) );
+  AO22X1_RVT U326 ( .A1(\u_memory/mem[1][3] ), .A2(n235), .A3(n234), .A4(n244), 
+        .Y(n120) );
+  AO22X1_RVT U327 ( .A1(\u_memory/mem[1][4] ), .A2(n235), .A3(n234), .A4(n245), 
+        .Y(n119) );
+  NAND2X0_RVT U328 ( .A1(n237), .A2(n236), .Y(n239) );
+  OA21X1_RVT U329 ( .A1(n239), .A2(n238), .A3(n255), .Y(n247) );
+  AO22X1_RVT U330 ( .A1(n247), .A2(\u_memory/mem[0][0] ), .A3(n242), .A4(n240), 
+        .Y(n115) );
+  AND2X1_RVT U331 ( .A1(n255), .A2(n242), .Y(n246) );
+  AO22X1_RVT U332 ( .A1(\u_memory/mem[0][1] ), .A2(n247), .A3(n246), .A4(n241), 
+        .Y(n114) );
+  AO221X1_RVT U333 ( .A1(n243), .A2(n242), .A3(n247), .A4(\u_memory/mem[0][2] ), .A5(rst), .Y(n113) );
+  AO22X1_RVT U334 ( .A1(\u_memory/mem[0][3] ), .A2(n247), .A3(n246), .A4(n244), 
+        .Y(n112) );
+  AO22X1_RVT U335 ( .A1(\u_memory/mem[0][4] ), .A2(n247), .A3(n246), .A4(n245), 
+        .Y(n111) );
+  AO22X1_RVT U336 ( .A1(n258), .A2(n266), .A3(cancel), .A4(n255), .Y(n250) );
+  AND2X1_RVT U337 ( .A1(n281), .A2(n248), .Y(n256) );
+  AO222X1_RVT U338 ( .A1(n250), .A2(display[0]), .A3(n256), .A4(change_out[0]), 
+        .A5(n258), .A6(n251), .Y(n91) );
+  FADDX1_RVT U339 ( .A(display[1]), .B(n251), .CI(price[1]), .S(n253) );
+  AND2X1_RVT U340 ( .A1(cancel), .A2(n255), .Y(n254) );
+  AO22X1_RVT U341 ( .A1(display[1]), .A2(n254), .A3(n256), .A4(change_out[1]), 
+        .Y(n252) );
+  AO21X1_RVT U342 ( .A1(n258), .A2(n253), .A3(n252), .Y(n90) );
+  AO222X1_RVT U343 ( .A1(n258), .A2(\intadd_0/SUM[0] ), .A3(n254), .A4(
+        display[2]), .A5(n256), .A6(change_out[2]), .Y(n89) );
+  AO222X1_RVT U344 ( .A1(n258), .A2(\intadd_0/SUM[1] ), .A3(n254), .A4(
+        display[3]), .A5(n256), .A6(change_out[3]), .Y(n88) );
+  AO222X1_RVT U345 ( .A1(n258), .A2(\intadd_0/SUM[2] ), .A3(n254), .A4(
+        display[4]), .A5(n256), .A6(change_out[4]), .Y(n87) );
+  AO222X1_RVT U346 ( .A1(n258), .A2(\intadd_0/SUM[3] ), .A3(n254), .A4(
+        display[5]), .A5(n256), .A6(change_out[5]), .Y(n86) );
+  AO222X1_RVT U347 ( .A1(n258), .A2(\intadd_0/SUM[4] ), .A3(n254), .A4(
+        display[6]), .A5(n256), .A6(change_out[6]), .Y(n85) );
+  AO22X1_RVT U348 ( .A1(\intadd_0/n1 ), .A2(n258), .A3(cancel), .A4(n255), .Y(
+        n260) );
+  AO22X1_RVT U349 ( .A1(n258), .A2(n257), .A3(n256), .A4(change_out[7]), .Y(
+        n259) );
+  AO21X1_RVT U350 ( .A1(display[7]), .A2(n260), .A3(n259), .Y(n84) );
 endmodule
 

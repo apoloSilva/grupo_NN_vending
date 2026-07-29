@@ -98,8 +98,9 @@ redirect $SYNTH_DIR/reports/check_design.rpt {
 # Arquivo SVF para verificação formal
 set_svf $FORMAL_DIR/reports/default.svf
 
-compile_ultra -no_autoungroup
-#compile_ultra
+
+compile_ultra
+
 
 redirect $SYNTH_DIR/reports/report_area.rpt {
     report_area

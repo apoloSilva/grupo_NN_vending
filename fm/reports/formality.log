@@ -21,7 +21,7 @@
 
 Build: 10190302
 Hostname: srv-microeletronica3
-Current time: Wed Jul 29 00:06:48 2026
+Current time: Wed Jul 29 05:35:47 2026
 
 Loading db file '/Tools/synopsys/fm/X-2025.06-SP3/libraries/syn/gtech.db'
 
@@ -31,15 +31,15 @@ Information: Term was not able to be set up using xterm-256color . Using "xterm"
 # Synopsys Formality script  para máquina de vendas - MANUAL
 # 1. Caminhos para arquivos do projeto e bibliotecas
 set ROOT_DIR  [pwd]; # diretório onde o fm_shell é executado
-/home/apolo.silva/atividades_roteiros/grupo_NN_vending
+/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending
 set RTL_DIR   $ROOT_DIR/rtl
-/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl
+/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl
 set LIBS_DIR  $ROOT_DIR/libs
-/home/apolo.silva/atividades_roteiros/grupo_NN_vending/libs
+/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/libs
 set SYNTH_DIR $ROOT_DIR/synth
-/home/apolo.silva/atividades_roteiros/grupo_NN_vending/synth
+/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/synth
 set FORMAL_DIR $ROOT_DIR/fm
-/home/apolo.silva/atividades_roteiros/grupo_NN_vending/fm
+/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/fm
 set rtl_files [list \
 	$RTL_DIR/vending_pkg.sv \
 	$RTL_DIR/credit_reg.sv \
@@ -49,7 +49,7 @@ set rtl_files [list \
 	$RTL_DIR/control_unit.sv \
 	$RTL_DIR/vending_top.sv \
 ]
-/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/vending_pkg.sv /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/credit_reg.sv /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/memory.sv /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/comparator.sv /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/subtractor.sv /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/control_unit.sv /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/vending_top.sv
+/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/vending_pkg.sv /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/credit_reg.sv /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/memory.sv /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/comparator.sv /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/subtractor.sv /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/control_unit.sv /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/vending_top.sv
 set TOP vending_top; #top do design a verificar
 vending_top
 # 2. habilita o modo de setup automático baseado no SVF
@@ -57,18 +57,18 @@ set synopsys_auto_setup true
 true
 # 3. Guidance 
 set_svf $FORMAL_DIR/reports/default.svf; # gerado a partir da síntese em dc
-SVF set to '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/fm/reports/default.svf'.
+SVF set to '/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/fm/reports/default.svf'.
 1
 # 4. Design de referência (golden) — RTL pré-síntese
 read_sverilog -r $rtl_files
 No target library specified, default is WORK
-Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/vending_pkg.sv'
-Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/credit_reg.sv'
-Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/memory.sv'
-Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/comparator.sv'
-Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/subtractor.sv'
-Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/control_unit.sv'
-Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/vending_top.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/vending_pkg.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/credit_reg.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/memory.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/comparator.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/subtractor.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/control_unit.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/vending_top.sv'
 Current container set to 'r'
 1
 set_top r:/WORK/$TOP
@@ -85,11 +85,11 @@ Reference design set to 'r:/WORK/vending_top'
 1
 # 5. Design revisado — netlist gerada pelo Design Compiler
 read_db $LIBS_DIR/saed32rvt_tt1p05v25c.db
-Loading db file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/libs/saed32rvt_tt1p05v25c.db'
+Loading db file '/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/libs/saed32rvt_tt1p05v25c.db'
 1
 read_verilog -i $SYNTH_DIR/${TOP}_syn.v
 No target library specified, default is WORK
-Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/synth/vending_top_syn.v'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/synth/vending_top_syn.v'
 Current container set to 'i'
 1
 set_top i:/WORK/$TOP
@@ -111,19 +111,18 @@ match
 Reference design is 'r:/WORK/vending_top'
 Implementation design is 'i:/WORK/vending_top'
 Status:  Checking designs...
-    Warning: 0 (7) undriven nets found in reference (implementation) design; see formality.log for list (FM-399)
 Status:  Building verification models...
 Status:  Checking Consistency...
     Info: Design(ref) vs SVF ...
     Warning: Inconsistency found between Formality Design Files and Synthesis guide files information. (FM-622)
     	SVF-DESIGN: Files with missing guide_file_info: 7
-		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/comparator.sv
-		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/control_unit.sv
-		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/credit_reg.sv
-		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/memory.sv
-		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/subtractor.sv
-		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/vending_pkg.sv
-		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/vending_top.sv
+		/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/comparator.sv
+		/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/control_unit.sv
+		/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/credit_reg.sv
+		/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/memory.sv
+		/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/subtractor.sv
+		/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/vending_pkg.sv
+		/home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl/vending_top.sv
     Info: Completed
 
     
@@ -133,8 +132,8 @@ Please check the transcript for details.
 *************************************************************************
 
 Status:  Processing Guide Commands...
-    SVF BEGIN: Timestamp: Cpu: 0.000h, Wall: 0.001h, Mem: 1.002G, Current time: Wed Jul 29 00:06:48 2026
-    SVF END: Timestamp: Cpu: 0.001h, Wall: 0.001h, Mem: 1.011G, Current time: Wed Jul 29 00:06:49 2026
+    SVF BEGIN: Timestamp: Cpu: 0.001h, Wall: 0.001h, Mem: 1.002G, Current time: Wed Jul 29 05:35:48 2026
+    SVF END: Timestamp: Cpu: 0.001h, Wall: 0.001h, Mem: 1.011G, Current time: Wed Jul 29 05:35:48 2026
 
 ***************************** Guidance Summary *****************************
                                          Status
@@ -145,14 +144,15 @@ boundary            :          1          0          0          0          1
 boundary_netlist    :          1          0          0          0          1
 change_names        :          7          0          0          0          7
 datapath            :          1          0          0          0          1
-environment         :          4          0          0          0          4
+environment         :          7          0          0          0          7
 instance_map        :          1          0          0          0          1
+inv_push            :          1          0          0          0          1
 merge               :          2          0          0          0          2
 reg_constant        :         49          0          0          0         49
 replace             :          2          0          0          0          2
-ungroup             :          1          0          0          0          1
+ungroup             :          6          0          0          0          6
 ----------------------------------------------------------------------------
-Total               :         70          0          0          0         70
+Total               :         79          0          0          0         79
 
 
 Note: No guide_hier_map commands were found in the SVF. It is
@@ -163,10 +163,10 @@ Note: No guide_hier_map commands were found in the SVF. It is
       hdlin_enable_hier_map and command set_verification_top.
 
 SVF files read:
-      /home/apolo.silva/atividades_roteiros/grupo_NN_vending/fm/reports/default.svf
+      /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/fm/reports/default.svf
 
 SVF files produced:
-  /home/apolo.silva/atividades_roteiros/grupo_NN_vending/formality_svf/
+  /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/formality_svf/
     svf.txt
 ****************************************************************************
 
@@ -251,8 +251,8 @@ report_unmatched_points > $FORMAL_DIR/reports/formality_unmatched.rpt
 exit
 
 Maximum memory usage for this session: 1036 MB
-CPU usage for this session: 2.82 seconds ( 0.00 hours )
-Current time: Wed Jul 29 00:06:54 2026
+CPU usage for this session: 2.98 seconds ( 0.00 hours )
+Current time: Wed Jul 29 05:35:53 2026
 Elapsed time: 7 seconds ( 0.00 hours )
 
 Thank you for using Formality (R)!

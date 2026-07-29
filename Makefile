@@ -23,9 +23,6 @@ RTL_FILES := \
 RTL_TOP := vending_top
 
 
-# Arquivo de formas de onda gerado pelo testbench
-WAVE_FILE := waves.fsdb
-
 # ==========================================
 # Flags das ferramentas comerciais
 # ==========================================

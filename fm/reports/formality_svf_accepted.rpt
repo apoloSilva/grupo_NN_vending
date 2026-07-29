@@ -5,7 +5,7 @@ Report         : svf_operation
 Reference      : r:/WORK/vending_top
 Implementation : i:/WORK/vending_top
 Version        : X-2025.06-SP3
-Date           : Wed Jul 29 00:06:53 2026
+Date           : Wed Jul 29 05:35:53 2026
 **************************************************
 
 ## SVF Operation 1 (Line: 21) - environment.  Status: accepted
@@ -57,288 +57,54 @@ guide_environment \
     { upf_isols_allow_instances_in_elements true } \
     { link_library { * saed32rvt_tt1p05v25c.db dw_foundation.sldb } } \
     { target_library saed32rvt_tt1p05v25c.db } \
-    { search_path { /home/apolo.silva/atividades_roteiros/grupo_NN_vending /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl /home/apolo.silva/atividades_roteiros/grupo_NN_vending/libs } } \
+    { search_path { /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/rtl /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/libs } } \
     { hdlin_fmsvf_enable_div_by_pow2 true } \
     { synopsys_root /Tools/synopsys/syn/X-2025.06-SP2 } \
-    { cwd /home/apolo.silva/atividades_roteiros/grupo_NN_vending } \
+    { cwd /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending } \
     { current_design vending_top } \
     { compile_seqmap_propagate_high_effort true } } 
 
-## SVF Operation 3 (Line: 75) - change_names.  Status: accepted
+## SVF Operation 3 (Line: 75) - environment.  Status: accepted
 ## Operation Id: 3
-guide_change_names \
-  -design { vending_memory } \
-  { { cell sub_44 sub_x_1 } } 
+guide_environment \
+  { { link_library { * saed32rvt_tt1p05v25c.db dw_foundation.sldb } } \
+    { compile_seqmap_propagate_high_effort true } } 
 
-## SVF Operation 4 (Line: 80) - reg_constant.  Status: accepted
+## SVF Operation 4 (Line: 80) - ungroup.  Status: accepted
 ## Operation Id: 4
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[3][8] } \
-  { 0 } 
+guide_ungroup \
+  -cells { u_control_unit } \
+  -design { vending_top } 
 
-## SVF Operation 5 (Line: 87) - reg_constant.  Status: accepted
+## SVF Operation 5 (Line: 85) - ungroup.  Status: accepted
 ## Operation Id: 5
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[3][9] } \
-  { 0 } 
+guide_ungroup \
+  -cells { u_credit_reg } \
+  -design { vending_top } 
 
-## SVF Operation 6 (Line: 94) - reg_constant.  Status: accepted
+## SVF Operation 6 (Line: 90) - ungroup.  Status: accepted
 ## Operation Id: 6
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[3][10] } \
-  { 1 } 
+guide_ungroup \
+  -cells { u_memory } \
+  -design { vending_top } 
 
-## SVF Operation 7 (Line: 101) - reg_constant.  Status: accepted
+## SVF Operation 7 (Line: 95) - ungroup.  Status: accepted
 ## Operation Id: 7
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[3][11] } \
-  { 0 } 
+guide_ungroup \
+  -cells { u_comparator } \
+  -design { vending_top } 
 
-## SVF Operation 8 (Line: 108) - reg_constant.  Status: accepted
+## SVF Operation 8 (Line: 100) - ungroup.  Status: accepted
 ## Operation Id: 8
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[3][12] } \
-  { 0 } 
+guide_ungroup \
+  -cells { u_subtractor } \
+  -design { vending_top } 
 
-## SVF Operation 9 (Line: 115) - reg_constant.  Status: accepted
+## SVF Operation 9 (Line: 105) - merge.  Status: accepted
 ## Operation Id: 9
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[3][13] } \
-  { 1 } 
-
-## SVF Operation 10 (Line: 122) - reg_constant.  Status: accepted
-## Operation Id: 10
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[3][14] } \
-  { 1 } 
-
-## SVF Operation 11 (Line: 129) - reg_constant.  Status: accepted
-## Operation Id: 11
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[3][15] } \
-  { 0 } 
-
-## SVF Operation 12 (Line: 136) - reg_constant.  Status: accepted
-## Operation Id: 12
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[2][8] } \
-  { 1 } 
-
-## SVF Operation 13 (Line: 143) - reg_constant.  Status: accepted
-## Operation Id: 13
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[2][9] } \
-  { 1 } 
-
-## SVF Operation 14 (Line: 150) - reg_constant.  Status: accepted
-## Operation Id: 14
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[2][10] } \
-  { 0 } 
-
-## SVF Operation 15 (Line: 157) - reg_constant.  Status: accepted
-## Operation Id: 15
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[2][11] } \
-  { 1 } 
-
-## SVF Operation 16 (Line: 164) - reg_constant.  Status: accepted
-## Operation Id: 16
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[2][12] } \
-  { 0 } 
-
-## SVF Operation 17 (Line: 171) - reg_constant.  Status: accepted
-## Operation Id: 17
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[2][13] } \
-  { 0 } 
-
-## SVF Operation 18 (Line: 178) - reg_constant.  Status: accepted
-## Operation Id: 18
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[2][14] } \
-  { 1 } 
-
-## SVF Operation 19 (Line: 185) - reg_constant.  Status: accepted
-## Operation Id: 19
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[2][15] } \
-  { 0 } 
-
-## SVF Operation 20 (Line: 192) - reg_constant.  Status: accepted
-## Operation Id: 20
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[1][8] } \
-  { 0 } 
-
-## SVF Operation 21 (Line: 199) - reg_constant.  Status: accepted
-## Operation Id: 21
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[1][9] } \
-  { 1 } 
-
-## SVF Operation 22 (Line: 206) - reg_constant.  Status: accepted
-## Operation Id: 22
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[1][10] } \
-  { 0 } 
-
-## SVF Operation 23 (Line: 213) - reg_constant.  Status: accepted
-## Operation Id: 23
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[1][11] } \
-  { 0 } 
-
-## SVF Operation 24 (Line: 220) - reg_constant.  Status: accepted
-## Operation Id: 24
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[1][12] } \
-  { 1 } 
-
-## SVF Operation 25 (Line: 227) - reg_constant.  Status: accepted
-## Operation Id: 25
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[1][13] } \
-  { 1 } 
-
-## SVF Operation 26 (Line: 234) - reg_constant.  Status: accepted
-## Operation Id: 26
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[1][14] } \
-  { 0 } 
-
-## SVF Operation 27 (Line: 241) - reg_constant.  Status: accepted
-## Operation Id: 27
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[1][15] } \
-  { 0 } 
-
-## SVF Operation 28 (Line: 248) - reg_constant.  Status: accepted
-## Operation Id: 28
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[0][8] } \
-  { 1 } 
-
-## SVF Operation 29 (Line: 255) - reg_constant.  Status: accepted
-## Operation Id: 29
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[0][9] } \
-  { 0 } 
-
-## SVF Operation 30 (Line: 262) - reg_constant.  Status: accepted
-## Operation Id: 30
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[0][10] } \
-  { 0 } 
-
-## SVF Operation 31 (Line: 269) - reg_constant.  Status: accepted
-## Operation Id: 31
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[0][11] } \
-  { 1 } 
-
-## SVF Operation 32 (Line: 276) - reg_constant.  Status: accepted
-## Operation Id: 32
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[0][12] } \
-  { 1 } 
-
-## SVF Operation 33 (Line: 283) - reg_constant.  Status: accepted
-## Operation Id: 33
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[0][13] } \
-  { 0 } 
-
-## SVF Operation 34 (Line: 290) - reg_constant.  Status: accepted
-## Operation Id: 34
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[0][14] } \
-  { 0 } 
-
-## SVF Operation 35 (Line: 297) - reg_constant.  Status: accepted
-## Operation Id: 35
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { mem_reg[0][15] } \
-  { 0 } 
-
-## SVF Operation 36 (Line: 304) - reg_constant.  Status: accepted
-## Operation Id: 36
-guide_reg_constant \
-  -design { vending_memory } \
-  -replaced { svfTrue } \
-  { price_reg[7] } \
-  { 0 } 
-
-## SVF Operation 37 (Line: 311) - merge.  Status: accepted
-## Operation Id: 37
 guide_merge \
-  -design { credit_reg } \
-  -datapath { RSOP_17 } \
+  -design { vending_top } \
+  -datapath { RSOP_46 } \
   -type { svfMergeRSOP } \
   -input { 1 I1 } \
   -input { 1 I2 } \
@@ -346,100 +112,370 @@ guide_merge \
   -input { 8 I4 } \
   -input { 7 I5 } \
   -output { 8 O1 } \
-  -pre_resource { { 8 } C164 = SELECT { { I1 } { I2 } { add_52.out.1 } { add_58.out.1 } } } \
-  -pre_resource { { 8 } add_52 = ADD { { I3 } { I4 } } } \
-  -pre_resource { { 8 } add_58 = ADD { { I3 } { I5 ZERO 8 } } } \
-  -pre_assign { O1 = { C164.out.1 } } 
+  -pre_resource { { 8 } u_credit_reg/C164 = SELECT { { I1 } { I2 } { u_credit_reg/add_52.out.1 } { u_credit_reg/add_58.out.1 } } } \
+  -pre_resource { { 8 } u_credit_reg/add_52 = ADD { { I3 } { I4 } } } \
+  -pre_resource { { 8 } u_credit_reg/add_58 = ADD { { I3 } { I5 ZERO 8 } } } \
+  -pre_assign { O1 = { u_credit_reg/C164.out.1 } } 
 
-## SVF Operation 38 (Line: 327) - instance_map.  Status: accepted
-## Operation Id: 38
+## SVF Operation 10 (Line: 121) - instance_map.  Status: accepted
+## Operation Id: 10
 guide_instance_map \
-  -design { credit_reg } \
-  -instance { RSOP_17 } \
-  -linked { credit_reg_RSOP_17 } 
+  -design { vending_top } \
+  -instance { RSOP_46 } \
+  -linked { vending_top_RSOP_46 } 
 
-## SVF Operation 39 (Line: 333) - change_names.  Status: accepted
-## Operation Id: 39
+## SVF Operation 11 (Line: 127) - change_names.  Status: accepted
+## Operation Id: 11
 guide_change_names \
-  -design { credit_reg_RSOP_17 } \
-  { { cell add_52 ADD_1 } } 
+  -design { vending_top_RSOP_46 } \
+  { { cell u_credit_reg/add_52 ADD_11 } } 
 
-## SVF Operation 40 (Line: 338) - change_names.  Status: accepted
-## Operation Id: 40
+## SVF Operation 12 (Line: 132) - change_names.  Status: accepted
+## Operation Id: 12
 guide_change_names \
-  -design { credit_reg_RSOP_17 } \
-  { { cell add_58 ADD_2 } } 
+  -design { vending_top_RSOP_46 } \
+  { { cell u_credit_reg/add_58 ADD_12 } } 
 
-## SVF Operation 41 (Line: 343) - reg_constant.  Status: accepted
-## Operation Id: 41
+## SVF Operation 13 (Line: 137) - change_names.  Status: accepted
+## Operation Id: 13
+guide_change_names \
+  -design { vending_top } \
+  { { cell u_memory/sub_44 sub_x_24 } } 
+
+## SVF Operation 14 (Line: 142) - change_names.  Status: accepted
+## Operation Id: 14
+guide_change_names \
+  -design { vending_top } \
+  { { cell u_comparator/gte_13 gte_x_32 } } 
+
+## SVF Operation 15 (Line: 147) - change_names.  Status: accepted
+## Operation Id: 15
+guide_change_names \
+  -design { vending_top } \
+  { { cell u_comparator/gt_13 gt_x_33 } } 
+
+## SVF Operation 16 (Line: 152) - change_names.  Status: accepted
+## Operation Id: 16
+guide_change_names \
+  -design { vending_top } \
+  { { cell u_subtractor/sub_11 sub_x_34 } } 
+
+## SVF Operation 17 (Line: 157) - reg_constant.  Status: accepted
+## Operation Id: 17
 guide_reg_constant \
-  -design { credit_reg } \
+  -design { vending_top } \
   -replaced { svfTrue } \
-  { pending_coin_value_reg[7] } \
+  { u_memory/mem_reg[0][15] } \
   { 0 } 
 
-## SVF Operation 42 (Line: 350) - change_names.  Status: accepted
+## SVF Operation 18 (Line: 164) - reg_constant.  Status: accepted
+## Operation Id: 18
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[0][14] } \
+  { 0 } 
+
+## SVF Operation 19 (Line: 171) - reg_constant.  Status: accepted
+## Operation Id: 19
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[0][13] } \
+  { 0 } 
+
+## SVF Operation 20 (Line: 178) - reg_constant.  Status: accepted
+## Operation Id: 20
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[0][12] } \
+  { 1 } 
+
+## SVF Operation 21 (Line: 185) - reg_constant.  Status: accepted
+## Operation Id: 21
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[0][11] } \
+  { 1 } 
+
+## SVF Operation 22 (Line: 192) - reg_constant.  Status: accepted
+## Operation Id: 22
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[0][10] } \
+  { 0 } 
+
+## SVF Operation 23 (Line: 199) - reg_constant.  Status: accepted
+## Operation Id: 23
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[0][9] } \
+  { 0 } 
+
+## SVF Operation 24 (Line: 206) - reg_constant.  Status: accepted
+## Operation Id: 24
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[0][8] } \
+  { 1 } 
+
+## SVF Operation 25 (Line: 213) - reg_constant.  Status: accepted
+## Operation Id: 25
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[1][15] } \
+  { 0 } 
+
+## SVF Operation 26 (Line: 220) - reg_constant.  Status: accepted
+## Operation Id: 26
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[1][14] } \
+  { 0 } 
+
+## SVF Operation 27 (Line: 227) - reg_constant.  Status: accepted
+## Operation Id: 27
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[1][13] } \
+  { 1 } 
+
+## SVF Operation 28 (Line: 234) - reg_constant.  Status: accepted
+## Operation Id: 28
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[1][12] } \
+  { 1 } 
+
+## SVF Operation 29 (Line: 241) - reg_constant.  Status: accepted
+## Operation Id: 29
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[1][11] } \
+  { 0 } 
+
+## SVF Operation 30 (Line: 248) - reg_constant.  Status: accepted
+## Operation Id: 30
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[1][10] } \
+  { 0 } 
+
+## SVF Operation 31 (Line: 255) - reg_constant.  Status: accepted
+## Operation Id: 31
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[1][9] } \
+  { 1 } 
+
+## SVF Operation 32 (Line: 262) - reg_constant.  Status: accepted
+## Operation Id: 32
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[1][8] } \
+  { 0 } 
+
+## SVF Operation 33 (Line: 269) - reg_constant.  Status: accepted
+## Operation Id: 33
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[2][15] } \
+  { 0 } 
+
+## SVF Operation 34 (Line: 276) - reg_constant.  Status: accepted
+## Operation Id: 34
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[2][14] } \
+  { 1 } 
+
+## SVF Operation 35 (Line: 283) - reg_constant.  Status: accepted
+## Operation Id: 35
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[2][13] } \
+  { 0 } 
+
+## SVF Operation 36 (Line: 290) - reg_constant.  Status: accepted
+## Operation Id: 36
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[2][12] } \
+  { 0 } 
+
+## SVF Operation 37 (Line: 297) - reg_constant.  Status: accepted
+## Operation Id: 37
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[2][11] } \
+  { 1 } 
+
+## SVF Operation 38 (Line: 304) - reg_constant.  Status: accepted
+## Operation Id: 38
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[2][10] } \
+  { 0 } 
+
+## SVF Operation 39 (Line: 311) - reg_constant.  Status: accepted
+## Operation Id: 39
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[2][9] } \
+  { 1 } 
+
+## SVF Operation 40 (Line: 318) - reg_constant.  Status: accepted
+## Operation Id: 40
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[2][8] } \
+  { 1 } 
+
+## SVF Operation 41 (Line: 325) - reg_constant.  Status: accepted
+## Operation Id: 41
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[3][15] } \
+  { 0 } 
+
+## SVF Operation 42 (Line: 332) - reg_constant.  Status: accepted
 ## Operation Id: 42
-guide_change_names \
-  -design { comparator } \
-  { { cell gte_13 gte_x_1 } } 
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[3][14] } \
+  { 1 } 
 
-## SVF Operation 43 (Line: 355) - change_names.  Status: accepted
+## SVF Operation 43 (Line: 339) - reg_constant.  Status: accepted
 ## Operation Id: 43
-guide_change_names \
-  -design { comparator } \
-  { { cell gt_13 gt_x_2 } } 
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[3][13] } \
+  { 1 } 
 
-## SVF Operation 44 (Line: 360) - change_names.  Status: accepted
+## SVF Operation 44 (Line: 346) - reg_constant.  Status: accepted
 ## Operation Id: 44
-guide_change_names \
-  -design { subtractor } \
-  { { cell sub_11 sub_x_1 } } 
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[3][12] } \
+  { 0 } 
 
-## SVF Operation 45 (Line: 365) - replace.  Status: accepted
+## SVF Operation 45 (Line: 353) - reg_constant.  Status: accepted
 ## Operation Id: 45
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[3][11] } \
+  { 0 } 
+
+## SVF Operation 46 (Line: 360) - reg_constant.  Status: accepted
+## Operation Id: 46
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[3][10] } \
+  { 1 } 
+
+## SVF Operation 47 (Line: 367) - reg_constant.  Status: accepted
+## Operation Id: 47
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[3][9] } \
+  { 0 } 
+
+## SVF Operation 48 (Line: 374) - reg_constant.  Status: accepted
+## Operation Id: 48
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[3][8] } \
+  { 0 } 
+
+## SVF Operation 49 (Line: 381) - reg_constant.  Status: accepted
+## Operation Id: 49
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/price_reg[7] } \
+  { 0 } 
+
+## SVF Operation 50 (Line: 388) - reg_constant.  Status: accepted
+## Operation Id: 50
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_credit_reg/pending_coin_value_reg[7] } \
+  { 0 } 
+
+## SVF Operation 51 (Line: 395) - replace.  Status: accepted
+## Operation Id: 51
 guide_replace \
   -origin { ExTra_mutex } \
-  -design { credit_reg_RSOP_17 } \
-  -input { 8 src24 } \
-  -input { 8 src25 } \
-  -input { 7 src0 } \
-  -input { 1 src27 } \
-  -input { 1 src28 } \
+  -design { vending_top_RSOP_46 } \
+  -input { 8 src43 } \
+  -input { 8 src75 } \
+  -input { 7 src10 } \
+  -input { 1 src76 } \
+  -input { 1 src77 } \
   -output { 8 O1 } \
-  -pre_resource { { 8 } ADD_1 = ADD { { src24 ANY 8 } { src25 ANY 8 } } } \
-  -pre_resource { { 8 } ADD_2 = ADD { { src24 ANY 8 } { src0 ZERO 8 } } } \
-  -pre_resource { { 8 } SEL_4 = SELECT { { src27 } { src28 } { ADD_1.out.1 ANY 8 } { ADD_2.out.1 ANY 8 } } } \
-  -pre_assign { O1 = { SEL_4.out.1 ANY 8 } } \
-  -post_resource { { 8 } ADD_6 = ADD { { SEL_7.out.1 ANY 8 } { SEL_8.out.1 ANY 8 } } } \
-  -post_resource { { 8 } SEL_7 = SELECT { { src27 } { src28 } { src24 ANY 8 } { src24 ANY 8 } } } \
-  -post_resource { { 8 } SEL_8 = SELECT { { src27 } { src28 } { src25 ANY 8 } { src0 ZERO 8 } } } \
-  -post_resource { { 8 } SEL_9 = SELECT { { src27 } { src28 } { ADD_6.out.1 ANY 8 } { ADD_6.out.1 ANY 8 } } } \
-  -post_assign { O1 = { SEL_9.out.1 ANY 8 } } 
+  -pre_resource { { 8 } ADD_11 = ADD { { src43 ANY 8 } { src75 ANY 8 } } } \
+  -pre_resource { { 8 } ADD_12 = ADD { { src43 ANY 8 } { src10 ZERO 8 } } } \
+  -pre_resource { { 8 } SEL_14 = SELECT { { src76 } { src77 } { ADD_11.out.1 ANY 8 } { ADD_12.out.1 ANY 8 } } } \
+  -pre_assign { O1 = { SEL_14.out.1 ANY 8 } } \
+  -post_resource { { 8 } ADD_16 = ADD { { SEL_17.out.1 ANY 8 } { SEL_18.out.1 ANY 8 } } } \
+  -post_resource { { 8 } SEL_17 = SELECT { { src76 } { src77 } { src43 ANY 8 } { src43 ANY 8 } } } \
+  -post_resource { { 8 } SEL_18 = SELECT { { src76 } { src77 } { src75 ANY 8 } { src10 ZERO 8 } } } \
+  -post_resource { { 8 } SEL_19 = SELECT { { src76 } { src77 } { ADD_16.out.1 ANY 8 } { ADD_16.out.1 ANY 8 } } } \
+  -post_assign { O1 = { SEL_19.out.1 ANY 8 } } 
 
-## SVF Operation 46 (Line: 385) - merge.  Status: accepted
-## Operation Id: 46
+## SVF Operation 52 (Line: 415) - merge.  Status: accepted
+## Operation Id: 52
 guide_merge \
-  -design { credit_reg_RSOP_17 } \
-  -datapath { DP_OP_12J1_122_223 } \
+  -design { vending_top_RSOP_46 } \
+  -datapath { DP_OP_22J1_122_2962 } \
   -type { svfMergeDPOP } \
   -input { 8 I1 } \
   -input { 8 I2 } \
   -output { 8 O1 } \
-  -pre_resource { { 8 } ADD_6 = ADD { { I1 } { I2 } } } \
-  -pre_assign { O1 = { ADD_6.out.1 } } 
+  -pre_resource { { 8 } ADD_16 = ADD { { I1 } { I2 } } } \
+  -pre_assign { O1 = { ADD_16.out.1 } } 
 
-## SVF Operation 47 (Line: 396) - boundary_netlist.  Status: accepted
-## Operation Id: 47
+## SVF Operation 53 (Line: 426) - boundary_netlist.  Status: accepted
+## Operation Id: 53
 guide_boundary_netlist \
   -file { netlists/S1/J1/dw-1 } \
   { saed32rvt_tt1p05v25c } 
 
-## SVF Operation 48 (Line: 401) - replace.  Status: accepted
-## Operation Id: 48
+## SVF Operation 54 (Line: 431) - replace.  Status: accepted
+## Operation Id: 54
 guide_replace \
   -origin { Gensh } \
-  -body { credit_reg_DP_OP_12J1_122_223_J1_0 } \
+  -body { vending_top_DP_OP_22J1_122_2962_J1_0 } \
   -input { unsigned 8 I1 bin } \
   -input { unsigned 8 I2 bin } \
   -output { 8 O1 bin } \
@@ -448,10 +484,10 @@ guide_replace \
   -post_resource { { 8 } OP0 = ADD { { I1 ZERO 8 } { I2 ZERO 8 } } } \
   -post_assign { O1 = { OP0.out.1 ZERO 8 } } 
 
-## SVF Operation 49 (Line: 413) - boundary.  Status: accepted
-## Operation Id: 49
+## SVF Operation 55 (Line: 443) - boundary.  Status: accepted
+## Operation Id: 55
 guide_boundary \
-  -body { credit_reg_DP_OP_12J1_122_223_J1_0 } \
+  -body { vending_top_DP_OP_22J1_122_2962_J1_0 } \
   -operand { I1 bin 8 } \
   -column { I1 0 { I1[0] } } \
   -column { I1 1 { I1[1] } } \
@@ -483,161 +519,177 @@ guide_boundary \
      { I1 I2 } \
      { OP0.out.1 } } 
 
-## SVF Operation 50 (Line: 447) - architecture_netlist.  Status: accepted
-## Operation Id: 50
+## SVF Operation 56 (Line: 477) - architecture_netlist.  Status: accepted
+## Operation Id: 56
 guide_architecture_netlist \
   -file { netlists/S1/J1/dw-1 } \
   { saed32rvt_tt1p05v25c } 
 
-## SVF Operation 51 (Line: 452) - datapath.  Status: accepted
-## Operation Id: 51
+## SVF Operation 57 (Line: 482) - datapath.  Status: accepted
+## Operation Id: 57
 guide_datapath \
-  -design { credit_reg_RSOP_17 } \
-  -datapath { DP_OP_12J1_122_223 } \
-  -body { credit_reg_DP_OP_12J1_122_223_J1_0 } 
+  -design { vending_top_RSOP_46 } \
+  -datapath { DP_OP_22J1_122_2962 } \
+  -body { vending_top_DP_OP_22J1_122_2962_J1_0 } 
 
-## SVF Operation 52 (Line: 458) - ungroup.  Status: accepted
-## Operation Id: 52
+## SVF Operation 58 (Line: 488) - ungroup.  Status: accepted
+## Operation Id: 58
 guide_ungroup \
-  -cells { RSOP_17 } \
-  -design { credit_reg } 
+  -cells { RSOP_46 } \
+  -design { vending_top } 
 
-## SVF Operation 53 (Line: 463) - change_names.  Status: accepted
-## Operation Id: 53
+## SVF Operation 59 (Line: 493) - change_names.  Status: accepted
+## Operation Id: 59
 guide_change_names \
-  -design { credit_reg } \
-  { { cell RSOP_17/DP_OP_12J1_122_223 DP_OP_12J1_122_223 } } 
+  -design { vending_top } \
+  { { cell RSOP_46/DP_OP_22J1_122_2962 DP_OP_22J1_122_2962 } } 
 
-## SVF Operation 54 (Line: 468) - reg_constant.  Status: accepted
-## Operation Id: 54
+## SVF Operation 60 (Line: 498) - reg_constant.  Status: accepted
+## Operation Id: 60
 guide_reg_constant \
   -design { vending_top } \
   -replaced { svfTrue } \
   { u_memory/mem_reg[0][7] } \
   { 0 } 
 
-## SVF Operation 55 (Line: 475) - reg_constant.  Status: accepted
-## Operation Id: 55
-guide_reg_constant \
-  -design { vending_top } \
-  -replaced { svfTrue } \
-  { u_memory/mem_reg[3][7] } \
-  { 0 } 
-
-## SVF Operation 56 (Line: 482) - reg_constant.  Status: accepted
-## Operation Id: 56
-guide_reg_constant \
-  -design { vending_top } \
-  -replaced { svfTrue } \
-  { u_memory/mem_reg[2][7] } \
-  { 0 } 
-
-## SVF Operation 57 (Line: 489) - reg_constant.  Status: accepted
-## Operation Id: 57
-guide_reg_constant \
-  -design { vending_top } \
-  -replaced { svfTrue } \
-  { u_memory/mem_reg[1][7] } \
-  { 0 } 
-
-## SVF Operation 58 (Line: 496) - reg_constant.  Status: accepted
-## Operation Id: 58
+## SVF Operation 61 (Line: 505) - reg_constant.  Status: accepted
+## Operation Id: 61
 guide_reg_constant \
   -design { vending_top } \
   -replaced { svfTrue } \
   { u_memory/stock_reg[7] } \
   { 0 } 
 
-## SVF Operation 59 (Line: 503) - reg_constant.  Status: accepted
-## Operation Id: 59
+## SVF Operation 62 (Line: 512) - reg_constant.  Status: accepted
+## Operation Id: 62
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[3][7] } \
+  { 0 } 
+
+## SVF Operation 63 (Line: 519) - reg_constant.  Status: accepted
+## Operation Id: 63
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[2][7] } \
+  { 0 } 
+
+## SVF Operation 64 (Line: 526) - reg_constant.  Status: accepted
+## Operation Id: 64
+guide_reg_constant \
+  -design { vending_top } \
+  -replaced { svfTrue } \
+  { u_memory/mem_reg[1][7] } \
+  { 0 } 
+
+## SVF Operation 65 (Line: 533) - inv_push.  Status: accepted
+## Operation Id: 65
+guide_inv_push \
+  -design { vending_top } \
+  -register { u_credit_reg/pending_coin_value_reg[4] } 
+
+## SVF Operation 66 (Line: 538) - reg_constant.  Status: accepted
+## Operation Id: 66
 guide_reg_constant \
   -design { vending_top } \
   -replaced { svfTrue } \
   { u_memory/mem_reg[0][6] } \
   { 0 } 
 
-## SVF Operation 60 (Line: 510) - reg_constant.  Status: accepted
-## Operation Id: 60
+## SVF Operation 67 (Line: 545) - reg_constant.  Status: accepted
+## Operation Id: 67
 guide_reg_constant \
   -design { vending_top } \
   -replaced { svfTrue } \
   { u_memory/mem_reg[3][6] } \
   { 0 } 
 
-## SVF Operation 61 (Line: 517) - reg_constant.  Status: accepted
-## Operation Id: 61
+## SVF Operation 68 (Line: 552) - reg_constant.  Status: accepted
+## Operation Id: 68
 guide_reg_constant \
   -design { vending_top } \
   -replaced { svfTrue } \
   { u_memory/mem_reg[2][6] } \
   { 0 } 
 
-## SVF Operation 62 (Line: 524) - reg_constant.  Status: accepted
-## Operation Id: 62
+## SVF Operation 69 (Line: 559) - reg_constant.  Status: accepted
+## Operation Id: 69
 guide_reg_constant \
   -design { vending_top } \
   -replaced { svfTrue } \
   { u_memory/mem_reg[1][6] } \
   { 0 } 
 
-## SVF Operation 63 (Line: 531) - reg_constant.  Status: accepted
-## Operation Id: 63
+## SVF Operation 70 (Line: 566) - reg_constant.  Status: accepted
+## Operation Id: 70
 guide_reg_constant \
   -design { vending_top } \
   -replaced { svfTrue } \
   { u_memory/stock_reg[6] } \
   { 0 } 
 
-## SVF Operation 64 (Line: 538) - reg_constant.  Status: accepted
-## Operation Id: 64
+## SVF Operation 71 (Line: 573) - reg_constant.  Status: accepted
+## Operation Id: 71
 guide_reg_constant \
   -design { vending_top } \
   -replaced { svfTrue } \
   { u_memory/mem_reg[0][5] } \
   { 0 } 
 
-## SVF Operation 65 (Line: 545) - reg_constant.  Status: accepted
-## Operation Id: 65
+## SVF Operation 72 (Line: 580) - reg_constant.  Status: accepted
+## Operation Id: 72
 guide_reg_constant \
   -design { vending_top } \
   -replaced { svfTrue } \
   { u_memory/mem_reg[3][5] } \
   { 0 } 
 
-## SVF Operation 66 (Line: 552) - reg_constant.  Status: accepted
-## Operation Id: 66
+## SVF Operation 73 (Line: 587) - reg_constant.  Status: accepted
+## Operation Id: 73
 guide_reg_constant \
   -design { vending_top } \
   -replaced { svfTrue } \
   { u_memory/mem_reg[2][5] } \
   { 0 } 
 
-## SVF Operation 67 (Line: 559) - reg_constant.  Status: accepted
-## Operation Id: 67
+## SVF Operation 74 (Line: 594) - reg_constant.  Status: accepted
+## Operation Id: 74
 guide_reg_constant \
   -design { vending_top } \
   -replaced { svfTrue } \
   { u_memory/mem_reg[1][5] } \
   { 0 } 
 
-## SVF Operation 68 (Line: 566) - reg_constant.  Status: accepted
-## Operation Id: 68
+## SVF Operation 75 (Line: 601) - reg_constant.  Status: accepted
+## Operation Id: 75
 guide_reg_constant \
   -design { vending_top } \
   -replaced { svfTrue } \
   { u_memory/stock_reg[5] } \
   { 0 } 
 
-## SVF Operation 69 (Line: 573) - environment.  Status: accepted
-## Operation Id: 69
+## SVF Operation 76 (Line: 608) - environment.  Status: accepted
+## Operation Id: 76
 guide_environment \
-  { { postcompile_db_list /home/apolo.silva/atividades_roteiros/grupo_NN_vending/libs/saed32rvt_tt1p05v25c.db } } 
+  { { postcompile_db_list /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/libs/saed32rvt_tt1p05v25c.db } } 
 
-## SVF Operation 70 (Line: 577) - environment.  Status: accepted
-## Operation Id: 70
+## SVF Operation 77 (Line: 612) - environment.  Status: accepted
+## Operation Id: 77
 guide_environment \
-  { { write_file { -format verilog -hierarchy -output /home/apolo.silva/atividades_roteiros/grupo_NN_vending/synth/vending_top_syn.v } } \
-    { write_file { -format ddc -hierarchy -output /home/apolo.silva/atividades_roteiros/grupo_NN_vending/synth/vending_top_syn.ddc } } \
+  { { precompile_db_list /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/libs/saed32rvt_tt1p05v25c.db } } 
+
+## SVF Operation 78 (Line: 616) - environment.  Status: accepted
+## Operation Id: 78
+guide_environment \
+  { { postcompile_db_list /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/libs/saed32rvt_tt1p05v25c.db } } 
+
+## SVF Operation 79 (Line: 620) - environment.  Status: accepted
+## Operation Id: 79
+guide_environment \
+  { { write_file { -format verilog -hierarchy -output /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/synth/vending_top_syn.v } } \
+    { write_file { -format ddc -hierarchy -output /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/synth/vending_top_syn.ddc } } \
     { compile_seqmap_propagate_high_effort true } } 
 
 1

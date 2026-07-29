@@ -4,7 +4,7 @@ Report : constraint
         -all_violators
 Design : vending_top
 Version: X-2025.06-SP2
-Date   : Wed Jul 29 00:05:26 2026
+Date   : Wed Jul 29 14:05:02 2026
 ****************************************
 
 
@@ -13,92 +13,94 @@ Date   : Wed Jul 29 00:05:26 2026
                              Required        Actual
    Endpoint                 Path Delay     Path Delay        Slack
    -----------------------------------------------------------------
-   u_credit_reg/pending_coin_value_reg[4]/D
-                                0.49           0.14 f        -0.36  (VIOLATED)
-   u_credit_reg/pending_coin_value_reg[0]/D
-                                0.49           0.14 f        -0.36  (VIOLATED)
-   u_credit_reg/pending_coin_value_reg[3]/D
-                                0.49           0.14 f        -0.36  (VIOLATED)
-   u_credit_reg/pending_coin_value_reg[2]/D
-                                0.49           0.14 f        -0.36  (VIOLATED)
-   u_credit_reg/pending_coin_value_reg[6]/D
-                                0.49           0.14 f        -0.36  (VIOLATED)
+   u_credit_reg/pending_coin_value_reg[1]/D
+                                0.49           0.13 f        -0.37  (VIOLATED)
+   u_memory/price_reg[2]/D      0.49           0.13 f        -0.37  (VIOLATED)
+   u_memory/price_reg[5]/D      0.49           0.13 f        -0.37  (VIOLATED)
+   u_memory/price_reg[6]/D      0.49           0.13 f        -0.37  (VIOLATED)
+   change_out_reg[2]/D          0.49           0.13 f        -0.36  (VIOLATED)
+   change_out_reg[3]/D          0.49           0.13 f        -0.36  (VIOLATED)
+   change_out_reg[4]/D          0.49           0.13 f        -0.36  (VIOLATED)
+   change_out_reg[5]/D          0.49           0.13 f        -0.36  (VIOLATED)
+   change_out_reg[6]/D          0.49           0.13 f        -0.36  (VIOLATED)
+   u_memory/price_reg[3]/D      0.49           0.13 f        -0.36  (VIOLATED)
+   u_memory/price_reg[4]/D      0.49           0.13 f        -0.36  (VIOLATED)
    u_credit_reg/pending_coin_value_reg[5]/D
                                 0.49           0.14 f        -0.36  (VIOLATED)
-   u_credit_reg/pending_coin_value_reg[1]/D
+   u_memory/stock_reg[4]/D      0.49           0.14 f        -0.36  (VIOLATED)
+   u_memory/price_reg[0]/D      0.49           0.14 f        -0.36  (VIOLATED)
+   u_memory/price_reg[1]/D      0.49           0.14 f        -0.36  (VIOLATED)
+   u_credit_reg/pending_coin_value_reg[6]/D
                                 0.49           0.14 f        -0.36  (VIOLATED)
-   u_memory/mem_reg[1][1]/D     0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/mem_reg[1][3]/D     0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/mem_reg[1][4]/D     0.49           0.14 f        -0.35  (VIOLATED)
+   u_memory/mem_reg[2][2]/D     0.49           0.14 f        -0.35  (VIOLATED)
+   u_memory/mem_reg[2][3]/D     0.49           0.14 f        -0.35  (VIOLATED)
+   u_memory/mem_reg[2][4]/D     0.49           0.14 f        -0.35  (VIOLATED)
    u_memory/mem_reg[3][0]/D     0.49           0.14 f        -0.35  (VIOLATED)
    u_memory/mem_reg[0][1]/D     0.49           0.14 f        -0.35  (VIOLATED)
    u_memory/mem_reg[0][3]/D     0.49           0.14 f        -0.35  (VIOLATED)
    u_memory/mem_reg[0][4]/D     0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/mem_reg[2][2]/D     0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/mem_reg[2][3]/D     0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/mem_reg[2][4]/D     0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/stock_reg[4]/D      0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/stock_reg[0]/D      0.49           0.14 f        -0.35  (VIOLATED)
+   u_memory/mem_reg[1][1]/D     0.49           0.14 f        -0.35  (VIOLATED)
+   u_memory/mem_reg[1][3]/D     0.49           0.14 f        -0.35  (VIOLATED)
+   u_memory/mem_reg[1][4]/D     0.49           0.14 f        -0.35  (VIOLATED)
    u_memory/mem_reg[3][2]/D     0.49           0.14 f        -0.35  (VIOLATED)
    u_memory/mem_reg[3][3]/D     0.49           0.14 f        -0.35  (VIOLATED)
    u_memory/mem_reg[3][4]/D     0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/stock_reg[1]/D      0.49           0.14 f        -0.35  (VIOLATED)
+   u_memory/mem_reg[2][0]/D     0.49           0.14 f        -0.35  (VIOLATED)
+   u_memory/mem_reg[0][0]/D     0.49           0.14 f        -0.35  (VIOLATED)
+   u_memory/mem_reg[1][0]/D     0.49           0.14 f        -0.35  (VIOLATED)
+   u_memory/stock_reg[0]/D      0.49           0.14 f        -0.35  (VIOLATED)
    u_memory/stock_reg[2]/D      0.49           0.14 f        -0.35  (VIOLATED)
    u_memory/stock_reg[3]/D      0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/mem_reg[1][0]/D     0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/mem_reg[0][0]/D     0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/mem_reg[2][0]/D     0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/price_reg[0]/D      0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/price_reg[2]/D      0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/price_reg[5]/D      0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/price_reg[6]/D      0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/price_reg[1]/D      0.49           0.14 f        -0.35  (VIOLATED)
-   u_memory/mem_reg[1][2]/D     0.49           0.15 f        -0.34  (VIOLATED)
+   u_memory/stock_reg[1]/D      0.49           0.14 f        -0.35  (VIOLATED)
+   change_out_reg[0]/D          0.49           0.14 f        -0.35  (VIOLATED)
+   u_credit_reg/pending_coin_value_reg[2]/D
+                                0.49           0.15 f        -0.35  (VIOLATED)
+   change_out_reg[7]/D          0.49           0.15 f        -0.34  (VIOLATED)
+   u_memory/mem_reg[2][1]/D     0.49           0.15 f        -0.34  (VIOLATED)
    u_memory/mem_reg[3][1]/D     0.49           0.15 f        -0.34  (VIOLATED)
    u_memory/mem_reg[0][2]/D     0.49           0.15 f        -0.34  (VIOLATED)
-   u_memory/mem_reg[2][1]/D     0.49           0.15 f        -0.34  (VIOLATED)
-   u_memory/price_reg[3]/D      0.49           0.15 f        -0.34  (VIOLATED)
-   u_memory/price_reg[4]/D      0.49           0.15 f        -0.34  (VIOLATED)
-   change_out_reg[0]/D          0.49           0.15 f        -0.34  (VIOLATED)
-   change_out_reg[1]/D          0.49           0.15 f        -0.34  (VIOLATED)
-   change_out_reg[2]/D          0.49           0.15 f        -0.34  (VIOLATED)
-   change_out_reg[3]/D          0.49           0.15 f        -0.34  (VIOLATED)
-   change_out_reg[4]/D          0.49           0.15 f        -0.34  (VIOLATED)
-   change_out_reg[5]/D          0.49           0.15 f        -0.34  (VIOLATED)
-   change_out_reg[6]/D          0.49           0.15 f        -0.34  (VIOLATED)
-   change_out_reg[7]/D          0.49           0.15 f        -0.34  (VIOLATED)
-   u_credit_reg/credit_reg[7]/D
-                                0.49           0.16 f        -0.34  (VIOLATED)
+   u_memory/mem_reg[1][2]/D     0.49           0.15 f        -0.34  (VIOLATED)
    u_credit_reg/credit_reg[0]/D
-                                0.49           0.16 f        -0.34  (VIOLATED)
-   u_credit_reg/credit_reg[1]/D
-                                0.49           0.16 f        -0.33  (VIOLATED)
-   u_credit_reg/credit_reg[5]/D
-                                0.49           0.16 f        -0.33  (VIOLATED)
-   u_credit_reg/credit_reg[2]/D
-                                0.49           0.16 f        -0.33  (VIOLATED)
-   u_credit_reg/credit_reg[6]/D
-                                0.49           0.16 f        -0.33  (VIOLATED)
-   u_credit_reg/credit_reg[3]/D
-                                0.49           0.16 f        -0.33  (VIOLATED)
-   u_credit_reg/credit_reg[4]/D
-                                0.49           0.16 f        -0.33  (VIOLATED)
-   u_credit_reg/coin_pending_reg/SETB
-                                0.53           0.20 f        -0.33  (VIOLATED)
-   u_memory/read_valid_reg/RSTB
-                                0.47           0.15 f        -0.32  (VIOLATED)
+                                0.49           0.15 f        -0.34  (VIOLATED)
+   u_credit_reg/credit_reg[7]/D
+                                0.49           0.15 f        -0.34  (VIOLATED)
+   change_out_reg[1]/D          0.49           0.16 f        -0.33  (VIOLATED)
    u_control_unit/state_q_reg[0]/D
-                                0.49           0.18 f        -0.31  (VIOLATED)
+                                0.49           0.17 f        -0.33  (VIOLATED)
+   u_credit_reg/credit_reg[5]/D
+                                0.49           0.17 f        -0.33  (VIOLATED)
+   u_credit_reg/credit_reg[3]/D
+                                0.49           0.17 f        -0.33  (VIOLATED)
+   u_credit_reg/credit_reg[2]/D
+                                0.49           0.17 f        -0.33  (VIOLATED)
+   u_credit_reg/credit_reg[6]/D
+                                0.49           0.17 f        -0.33  (VIOLATED)
+   u_credit_reg/credit_reg[4]/D
+                                0.49           0.17 f        -0.33  (VIOLATED)
+   u_credit_reg/pending_coin_value_reg[4]/RSTB
+                                0.47           0.15 f        -0.32  (VIOLATED)
+   u_credit_reg/pending_coin_value_reg[0]/D
+                                0.49           0.17 f        -0.32  (VIOLATED)
+   u_credit_reg/pending_coin_value_reg[3]/D
+                                0.49           0.17 f        -0.32  (VIOLATED)
+   u_credit_reg/credit_reg[1]/D
+                                0.49           0.17 f        -0.32  (VIOLATED)
+   u_credit_reg/pending_coin_value_reg[4]/SETB
+                                0.55           0.23 f        -0.32  (VIOLATED)
+   u_credit_reg/coin_pending_reg/D
+                                0.49           0.19 f        -0.30  (VIOLATED)
    u_control_unit/state_q_reg[2]/D
-                                0.49           0.19 f        -0.31  (VIOLATED)
+                                0.49           0.19 f        -0.30  (VIOLATED)
    u_control_unit/state_q_reg[1]/RSTB
                                 0.47           0.18 f        -0.30  (VIOLATED)
-   u_credit_reg/coin_pending_reg/RSTB
-                                0.47           0.18 f        -0.29  (VIOLATED)
-   u_credit_reg/coin_in_q_reg[0]/RSTB
-                                0.47           0.23 f        -0.25  (VIOLATED)
-   u_credit_reg/coin_in_q_reg[1]/RSTB
-                                0.47           0.23 f        -0.25  (VIOLATED)
+   u_memory/read_valid_reg/D
+                                0.48           0.21 f        -0.28  (VIOLATED)
+   u_credit_reg/coin_in_q_reg[0]/D
+                                0.49           0.23 r        -0.25  (VIOLATED)
+   u_credit_reg/coin_in_q_reg[1]/D
+                                0.48           0.23 r        -0.25  (VIOLATED)
+   u_credit_reg/pending_coin_value_reg[4]/D
+                                0.46           0.25 r        -0.22  (VIOLATED)
 
 
 1
