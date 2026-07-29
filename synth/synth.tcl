@@ -99,6 +99,7 @@ redirect $SYNTH_DIR/reports/check_design.rpt {
 set_svf $FORMAL_DIR/reports/default.svf
 
 
+#compile_ultra -no_autoungroup
 compile_ultra
 
 

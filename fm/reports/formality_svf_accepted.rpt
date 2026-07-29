@@ -5,7 +5,7 @@ Report         : svf_operation
 Reference      : r:/WORK/vending_top
 Implementation : i:/WORK/vending_top
 Version        : X-2025.06-SP3
-Date           : Wed Jul 29 05:35:53 2026
+Date           : Wed Jul 29 14:55:52 2026
 **************************************************
 
 ## SVF Operation 1 (Line: 21) - environment.  Status: accepted
@@ -677,16 +677,6 @@ guide_environment \
 
 ## SVF Operation 77 (Line: 612) - environment.  Status: accepted
 ## Operation Id: 77
-guide_environment \
-  { { precompile_db_list /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/libs/saed32rvt_tt1p05v25c.db } } 
-
-## SVF Operation 78 (Line: 616) - environment.  Status: accepted
-## Operation Id: 78
-guide_environment \
-  { { postcompile_db_list /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/libs/saed32rvt_tt1p05v25c.db } } 
-
-## SVF Operation 79 (Line: 620) - environment.  Status: accepted
-## Operation Id: 79
 guide_environment \
   { { write_file { -format verilog -hierarchy -output /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/synth/vending_top_syn.v } } \
     { write_file { -format ddc -hierarchy -output /home/apolo.silva/atividades_roteiros/vending_machine/formal/grupo_NN_vending/synth/vending_top_syn.ddc } } \
