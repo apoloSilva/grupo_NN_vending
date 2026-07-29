@@ -1,4 +1,4 @@
-# Igora tudo, com exeção dos arquivos .gitignore, Makefile, relatório.pdf, README.md, e os arquivos pastas rtl, sim e synth
+# Ignora tudo por padrão, menos
 *
 !.gitignore
 
@@ -6,16 +6,13 @@
 !relatorio.pdf
 !README.md
 
+# Mantém tudo dentro de rtl, synth e fm
 !rtl/
 !rtl/**
 
-!sim/
-!sim/**
-
 !synth/
-!synth/synth.tcl
-!synth/vending.sdc
+!synth/**
 
-# Mantém a pasta reports vazia no Git
-!synth/reports/
-!synth/reports/.gitkeep
+!fm/
+!fm/**
+

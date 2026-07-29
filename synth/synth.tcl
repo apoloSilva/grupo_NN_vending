@@ -7,9 +7,11 @@ set ROOT_DIR  [pwd]; # diretório onde o dc_shell é executado
 set RTL_DIR   $ROOT_DIR/rtl
 set LIBS_DIR  $ROOT_DIR/libs
 set SYNTH_DIR $ROOT_DIR/synth
+set FORMAL_DIR $ROOT_DIR/fm
 
 file mkdir $ROOT_DIR/work
 file mkdir $SYNTH_DIR/reports
+file mkdir $FORMAL_DIR/reports
 
 set_app_var search_path [list \
     $ROOT_DIR \
@@ -89,11 +91,12 @@ link
 # Carrega o SDC no mesmo contexto Tcl, permitindo o uso de ::CLK_PERIOD.
 source $SYNTH_DIR/vending.sdc
 
-set_fix_hold [get_clocks clk] # não observei mudanças com ou sem
-
 redirect $SYNTH_DIR/reports/check_design.rpt {
     check_design
 }
+
+# Arquivo SVF para verificação formal
+set_svf $FORMAL_DIR/reports/default.svf
 
 compile_ultra -no_autoungroup
 #compile_ultra

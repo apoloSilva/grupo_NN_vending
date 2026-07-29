@@ -1,0 +1,22 @@
+ 
+****************************************
+check_design summary:
+Version:     X-2025.06-SP2
+Date:        Wed Jul 29 00:04:38 2026
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Inputs/Outputs                                                      2
+    Shorted outputs (LINT-31)                                       2
+
+Cells                                                               3
+    Cells do not drive (LINT-1)                                     3
+--------------------------------------------------------------------------------
+
+Warning: In design 'credit_reg', cell 'C202' does not drive any nets. (LINT-1)
+Warning: In design 'credit_reg', cell 'C210' does not drive any nets. (LINT-1)
+Warning: In design 'vending_memory', cell 'C311' does not drive any nets. (LINT-1)
+Warning: In design 'control_unit', output port 'mem_write' is connected directly to output port 'change_capture'. (LINT-31)
+Warning: In design 'control_unit', output port 'mem_write' is connected directly to output port 'dispense'. (LINT-31)
+1

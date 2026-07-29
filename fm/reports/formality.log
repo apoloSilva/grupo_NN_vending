@@ -1,0 +1,258 @@
+
+                                 Formality (R)
+
+               Version X-2025.06-SP3 for linux64 - Oct 13, 2025 
+
+                    Copyright (c) 1988 - 2025 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+Build: 10190302
+Hostname: srv-microeletronica3
+Current time: Wed Jul 29 00:06:48 2026
+
+Loading db file '/Tools/synopsys/fm/X-2025.06-SP3/libraries/syn/gtech.db'
+
+Script: fm/formality.tcl
+
+Information: Term was not able to be set up using xterm-256color . Using "xterm" by default instead. (CLE-10)
+# Synopsys Formality script  para máquina de vendas - MANUAL
+# 1. Caminhos para arquivos do projeto e bibliotecas
+set ROOT_DIR  [pwd]; # diretório onde o fm_shell é executado
+/home/apolo.silva/atividades_roteiros/grupo_NN_vending
+set RTL_DIR   $ROOT_DIR/rtl
+/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl
+set LIBS_DIR  $ROOT_DIR/libs
+/home/apolo.silva/atividades_roteiros/grupo_NN_vending/libs
+set SYNTH_DIR $ROOT_DIR/synth
+/home/apolo.silva/atividades_roteiros/grupo_NN_vending/synth
+set FORMAL_DIR $ROOT_DIR/fm
+/home/apolo.silva/atividades_roteiros/grupo_NN_vending/fm
+set rtl_files [list \
+	$RTL_DIR/vending_pkg.sv \
+	$RTL_DIR/credit_reg.sv \
+	$RTL_DIR/memory.sv \
+	$RTL_DIR/comparator.sv \
+	$RTL_DIR/subtractor.sv \
+	$RTL_DIR/control_unit.sv \
+	$RTL_DIR/vending_top.sv \
+]
+/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/vending_pkg.sv /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/credit_reg.sv /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/memory.sv /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/comparator.sv /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/subtractor.sv /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/control_unit.sv /home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/vending_top.sv
+set TOP vending_top; #top do design a verificar
+vending_top
+# 2. habilita o modo de setup automático baseado no SVF
+set synopsys_auto_setup true
+true
+# 3. Guidance 
+set_svf $FORMAL_DIR/reports/default.svf; # gerado a partir da síntese em dc
+SVF set to '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/fm/reports/default.svf'.
+1
+# 4. Design de referência (golden) — RTL pré-síntese
+read_sverilog -r $rtl_files
+No target library specified, default is WORK
+Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/vending_pkg.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/credit_reg.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/memory.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/comparator.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/subtractor.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/control_unit.sv'
+Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/vending_top.sv'
+Current container set to 'r'
+1
+set_top r:/WORK/$TOP
+Setting top design to 'r:/WORK/vending_top'
+Status:   Elaborating design vending_top   ...  
+Status:   Elaborating design control_unit   ...  
+Status:   Elaborating design credit_reg   ...  
+Status:   Elaborating design vending_memory   ...  
+Status:   Elaborating design comparator   ...  
+Status:   Elaborating design subtractor   ...  
+Status:  Implementing inferred operators...
+Top design successfully set to 'r:/WORK/vending_top'
+Reference design set to 'r:/WORK/vending_top'
+1
+# 5. Design revisado — netlist gerada pelo Design Compiler
+read_db $LIBS_DIR/saed32rvt_tt1p05v25c.db
+Loading db file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/libs/saed32rvt_tt1p05v25c.db'
+1
+read_verilog -i $SYNTH_DIR/${TOP}_syn.v
+No target library specified, default is WORK
+Loading verilog file '/home/apolo.silva/atividades_roteiros/grupo_NN_vending/synth/vending_top_syn.v'
+Current container set to 'i'
+1
+set_top i:/WORK/$TOP
+Setting top design to 'i:/WORK/vending_top'
+Status:  Implementing inferred operators...
+
+************ Library Checking Summary ************
+Warning:  8 unlinked power cell(s) with unread pg pins.
+Warning:  1 unlinked power cell(s) with unread save/restore retention signals.
+Warning:  72 unlinked power cell(s) with no power down function on an ff or latch.
+        Use 'report_libraries -defects all' for more details.
+**************************************************
+
+Top design successfully set to 'i:/WORK/vending_top'
+Implementation design set to 'i:/WORK/vending_top'
+1
+# 6. Casamento de pontos entre golden e revised, usando o guidance do SVF
+match
+Reference design is 'r:/WORK/vending_top'
+Implementation design is 'i:/WORK/vending_top'
+Status:  Checking designs...
+    Warning: 0 (7) undriven nets found in reference (implementation) design; see formality.log for list (FM-399)
+Status:  Building verification models...
+Status:  Checking Consistency...
+    Info: Design(ref) vs SVF ...
+    Warning: Inconsistency found between Formality Design Files and Synthesis guide files information. (FM-622)
+    	SVF-DESIGN: Files with missing guide_file_info: 7
+		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/comparator.sv
+		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/control_unit.sv
+		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/credit_reg.sv
+		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/memory.sv
+		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/subtractor.sv
+		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/vending_pkg.sv
+		/home/apolo.silva/atividades_roteiros/grupo_NN_vending/rtl/vending_top.sv
+    Info: Completed
+
+    
+******************** DESIGN CONSISTENCY CHECK SUMMARY ********************
+1 FM-622 message produced.
+Please check the transcript for details.
+*************************************************************************
+
+Status:  Processing Guide Commands...
+    SVF BEGIN: Timestamp: Cpu: 0.000h, Wall: 0.001h, Mem: 1.002G, Current time: Wed Jul 29 00:06:48 2026
+    SVF END: Timestamp: Cpu: 0.001h, Wall: 0.001h, Mem: 1.011G, Current time: Wed Jul 29 00:06:49 2026
+
+***************************** Guidance Summary *****************************
+                                         Status
+Command                 Accepted   Rejected    Pending Unprocessed     Total
+----------------------------------------------------------------------------
+architecture_netlist:          1          0          0          0          1
+boundary            :          1          0          0          0          1
+boundary_netlist    :          1          0          0          0          1
+change_names        :          7          0          0          0          7
+datapath            :          1          0          0          0          1
+environment         :          4          0          0          0          4
+instance_map        :          1          0          0          0          1
+merge               :          2          0          0          0          2
+reg_constant        :         49          0          0          0         49
+replace             :          2          0          0          0          2
+ungroup             :          1          0          0          0          1
+----------------------------------------------------------------------------
+Total               :         70          0          0          0         70
+
+
+Note: No guide_hier_map commands were found in the SVF. It is
+      important to enable guide_hier_map generation in
+      Design Compiler to avoid SVF rejections that can cause
+      aborted/failing points or long run times during verification.
+      In Design Compiler the recommended methodology uses variable
+      hdlin_enable_hier_map and command set_verification_top.
+
+SVF files read:
+      /home/apolo.silva/atividades_roteiros/grupo_NN_vending/fm/reports/default.svf
+
+SVF files produced:
+  /home/apolo.silva/atividades_roteiros/grupo_NN_vending/formality_svf/
+    svf.txt
+****************************************************************************
+
+Status:  Matching...
+    
+*********************************** Matching Results ***********************************    
+ 83 Compare points matched by name    
+ 0 Compare points matched by signature analysis    
+ 0 Compare points matched by topology    
+ 8 Matched primary inputs, black-box outputs    
+ 0(0) Unmatched reference(implementation) compare points    
+ 0(0) Unmatched reference(implementation) primary inputs, black-box outputs    
+****************************************************************************************
+
+1
+# Salvando operações do SVF que foram usadas com sucesso como guidance e que foram rejetidas
+report_svf_operation -status accepted > $FORMAL_DIR/reports/formality_svf_accepted.rpt
+report_svf_operation -status rejected > $FORMAL_DIR/reports/formality_svf_rejected.rpt
+# Resultados do casamento (matching)
+report_matched_points > $FORMAL_DIR/reports/formality_matched.rpt
+report_unmatched_points > $FORMAL_DIR/reports/formality_unmatched.rpt
+# 7. Prova de equivalência ponto a ponto
+verify
+Reference design is 'r:/WORK/vending_top'
+Implementation design is 'i:/WORK/vending_top'
+    
+*********************************** Matching Results ***********************************    
+ 83 Compare points matched by name    
+ 0 Compare points matched by signature analysis    
+ 0 Compare points matched by topology    
+ 8 Matched primary inputs, black-box outputs    
+ 0(0) Unmatched reference(implementation) compare points    
+ 0(0) Unmatched reference(implementation) primary inputs, black-box outputs    
+****************************************************************************************
+
+Status:  Verifying...
+
+***************************** Synopsys Auto Setup Summary ******************************
+
+!!! Synopsys Auto Setup Mode was enabled. !!!
+!!! Verification results are valid assuming the following setup constraints: !!!
+
+### RTL Interpretation Setup
+   set hdlin_ignore_parallel_case false
+   set hdlin_ignore_full_case false
+   set hdlin_error_on_mismatch_message false
+   set hdlin_ignore_embedded_configuration true
+
+### Undriven Signal Handling Setup
+   set verification_set_undriven_signals synthesis
+
+### Test Logic Setup
+   set verification_verify_directly_undriven_output false
+   For details see report_dont_verify_points and report_constants
+
+For further details on Synopsys Auto Setup Mode: Type man synopsys_auto_setup
+****************************************************************************************
+
+
+********************************* Verification Results *********************************
+Verification SUCCEEDED
+   ATTENTION: synopsys_auto_setup mode was enabled.
+              See Synopsys Auto Setup Summary for details.
+   ATTENTION: Inconsistency detected in design data with SVF.
+              See Design Consistency Check Summary for details.
+----------------------------------------------------------
+ Reference design: r:/WORK/vending_top
+ Implementation design: i:/WORK/vending_top
+ 83 Passing compare points
+----------------------------------------------------------------------------------------
+Matched Compare Points     BBPin    Loop   BBNet     Cut    Port     DFF     LAT   TOTAL
+----------------------------------------------------------------------------------------
+Passing (equivalent)           0       0       0       0      21      62       0      83
+Failing (not equivalent)       0       0       0       0       0       0       0       0
+****************************************************************************************
+1
+# 8. Relatórios de sign-off
+report_status > $FORMAL_DIR/reports/formality_status.rpt
+report_passing_points > $FORMAL_DIR/reports/formality_passing.rpt
+report_failing_points > $FORMAL_DIR/reports/formality_failing.rpt
+report_unmatched_points > $FORMAL_DIR/reports/formality_unmatched.rpt
+exit
+
+Maximum memory usage for this session: 1036 MB
+CPU usage for this session: 2.82 seconds ( 0.00 hours )
+Current time: Wed Jul 29 00:06:54 2026
+Elapsed time: 7 seconds ( 0.00 hours )
+
+Thank you for using Formality (R)!
