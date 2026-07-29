@@ -21,7 +21,7 @@
 
 Build: 10190302
 Hostname: srv-microeletronica3
-Current time: Wed Jul 29 14:55:45 2026
+Current time: Wed Jul 29 17:49:21 2026
 
 Loading db file '/Tools/synopsys/fm/X-2025.06-SP3/libraries/syn/gtech.db'
 
@@ -132,8 +132,8 @@ Please check the transcript for details.
 *************************************************************************
 
 Status:  Processing Guide Commands...
-    SVF BEGIN: Timestamp: Cpu: 0.000h, Wall: 0.001h, Mem: 1.002G, Current time: Wed Jul 29 14:55:46 2026
-    SVF END: Timestamp: Cpu: 0.000h, Wall: 0.001h, Mem: 1.011G, Current time: Wed Jul 29 14:55:47 2026
+    SVF BEGIN: Timestamp: Cpu: 0.000h, Wall: 0.001h, Mem: 1.002G, Current time: Wed Jul 29 17:49:22 2026
+    SVF END: Timestamp: Cpu: 0.001h, Wall: 0.001h, Mem: 1.012G, Current time: Wed Jul 29 17:49:24 2026
 
 ***************************** Guidance Summary *****************************
                                          Status
@@ -248,11 +248,13 @@ report_status > $FORMAL_DIR/reports/formality_status.rpt
 report_passing_points > $FORMAL_DIR/reports/formality_passing.rpt
 report_failing_points > $FORMAL_DIR/reports/formality_failing.rpt
 report_unmatched_points > $FORMAL_DIR/reports/formality_unmatched.rpt
-exit
+fm_shell (verify)> report_Status[K[K[K[K[K[K[K_status -verbose
+Error: unknown option '-verbose' (CMD-010)
+fm_shell (verify)> exit
 
 Maximum memory usage for this session: 1036 MB
-CPU usage for this session: 2.5 seconds ( 0.00 hours )
-Current time: Wed Jul 29 14:55:52 2026
-Elapsed time: 7 seconds ( 0.00 hours )
+CPU usage for this session: 2.76 seconds ( 0.00 hours )
+Current time: Wed Jul 29 17:57:47 2026
+Elapsed time: 506 seconds ( 0.14 hours )
 
 Thank you for using Formality (R)!

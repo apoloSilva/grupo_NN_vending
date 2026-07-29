@@ -57,9 +57,3 @@ report_unmatched_points > $FORMAL_DIR/reports/formality_unmatched.rpt
 
 exit
 
-
-
-
-
-
-

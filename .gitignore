@@ -3,7 +3,7 @@
 !.gitignore
 
 !Makefile
-!relatorio.pdf
+!relatorio_equivalencia.pdf
 !README.md
 
 # Mantém tudo dentro de rtl, synth e fm
