@@ -40,7 +40,20 @@ grupo_NN_vending/
         └── ...
 ```
 
-Antes da síntese, os arquivos antigos gerados pela simulação e pela síntese são removidos.
+Antes da síntese, os arquivos antigos gerados pela síntese são removidos.
+De forma similar, cada rodada de verificação também remove arquivos antigos.
+
+Inclua a pasta libs/ na estrutura:
+
+```text
+grupo_NN_vending/
+├── relatorio_equivalencia.pdf
+├── Makefile
+├── libs/
+│   └── <biblioteca_celulas>.db
+├── rtl/
+└── ...
+```
 
 Atualmente, o período de clock utilizado é de 6 ns.
 
