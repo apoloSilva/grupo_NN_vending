@@ -1,30 +1,21 @@
-# ATIVIDADE AVALIATIVA: Verificação de Equivalência Formal
+# ATIVIDADES AVALIATIVAS: Controlador de Vending Machine e Verificação de Equivalência Formal
 
-> Este branch contém os arquivos utilizados na verificação de equivalência
-> formal do controlador de vending machine.
->
-> A implementação, a simulação e a síntese originais do controlador estão
-> disponíveis no branch
-> [`main`](https://github.com/apoloSilva/grupo_NN_vending/tree/main).
+> Este repositório contém a implementação, a simulação, a síntese e a verificação de equivalência formal do controlador de vending machine.
 
 ## Descrição do projeto
 
-O projeto realiza a verificação de equivalência formal entre a descrição RTL
-do controlador de vending machine, desenvolvida em SystemVerilog, e a netlist
-gerada pelo Synopsys Design Compiler.
+O projeto implementa um controlador de máquina de vendas utilizando SystemVerilog. O sistema é composto principalmente por uma unidade de controle baseada em uma máquina de estados de Moore, memória síncrona, registrador de crédito e blocos combinacionais de comparação e subtração.
 
-Foram realizadas duas rodadas de síntese e verificação: uma com
-`compile_ultra -no_autoungroup` e outra com `compile_ultra`. Em cada rodada, a
-netlist e o arquivo SVF correspondente foram regenerados, e os resultados
-foram salvos antes da execução seguinte.
+Além disso, o projeto realiza a verificação de equivalência formal entre a descrição RTL do controlador e a netlist.
 
-O relatório em PDF apresenta os procedimentos adotados e os resultados
-obtidos.
+O relatório em PDF apresenta mais detalhes sobre a arquitetura, a simulação, a síntese e os resultados da verificação de equivalência formal.
 
 ## Estrutura do projeto
 
 ```text
 grupo_NN_vending/
+├── relatorio.pdf
+├── Makefile
 ├── rtl/
 │   ├── vending_pkg.sv
 │   ├── credit_reg.sv
@@ -33,60 +24,147 @@ grupo_NN_vending/
 │   ├── subtractor.sv
 │   ├── control_unit.sv
 │   └── vending_top.sv
+├── sim/
+│   └── tb_vending.sv
 ├── synth/
 │   ├── synth.tcl
 │   ├── vending.sdc
-│   ├── vending_top_netlist.v
+│   ├── vending_top_syn.v
 │   └── reports/
 │       ├── default.svf
-│       ├── dwsvf_default/
 │       └── ...
-├── fm/
-│   ├── formality.tcl
-│   ├── formality_submodules.tcl
-│   └── reports/
-│       ├── formality_status.rpt
-│       ├── formality_passing.rpt
-│       ├── formality_failing.rpt
-│       ├── formality_unmatched.rpt
-│       ├── formality_svf_accepted.rpt
-│       └── formality_svf_rejected.rpt
-└── relatorio_equivalencia.pdf
+└── fm/
+    ├── formality.tcl
+    ├── formality_auto.tcl
+    └── reports/
+│       └── ...
 ```
 
-## Execução
+## Verificação de sintaxe
 
-Para executar a síntese com período de *clock* de 6 ns e gerar a netlist e o
-arquivo SVF:
+Para analisar os arquivos RTL e o testbench com o comando `vlogan`, execute:
+
+```bash
+make syntax
+```
+
+## Compilação
+
+Para analisar os arquivos e elaborar o testbench com o VCS, execute:
+
+```bash
+make compile
+```
+
+## Simulação
+
+Para compilar e executar o testbench, utilize:
+
+```bash
+make run
+```
+
+Esse alvo executa, em sequência:
+
+- a análise dos arquivos com `vlogan`;
+- a elaboração do projeto com `vcs`;
+- a execução do simulador `simv`.
+
+Durante a simulação, o testbench gera o seguinte arquivo de formas de onda:
+
+```text
+waves.fsdb
+```
+
+## Visualização das formas de onda
+
+Depois de executar a simulação, abra o arquivo FSDB no Verdi com:
+
+```bash
+make wave
+```
+
+## Síntese com Design Compiler
+
+Para executar a síntese e gerar a netlist e o arquivo SVF, utilize:
 
 ```bash
 make synth
 ```
 
-Para executar a verificação de equivalência formal:
+Antes da síntese, os arquivos antigos gerados pela simulação e pela síntese são removidos.
+
+Atualmente, o período de clock utilizado é de 6 ns.
+
+Para utilizar outro período de clock, altere o valor de `CLK_PERIOD` no alvo `synth` do `Makefile`.
+
+Os relatórios de síntese são armazenados em:
+
+```text
+synth/reports/
+```
+
+## Verificação de equivalência formal
+
+Para executar a verificação de equivalência formal, utilize:
 
 ```bash
 make fm_run
 ```
 
-Para abrir a interface gráfica do Formality:
+Para abrir a interface gráfica do Formality, utilize:
 
 ```bash
 make rungui
 ```
 
+Os relatórios da verificação são armazenados em:
+
+```text
+fm/reports/
+```
+
 ## Limpeza
 
-Para remover os arquivos gerados pela síntese:
+Para remover apenas os arquivos gerados pela simulação, execute:
+
+```bash
+make clean_sim
+```
+
+Para remover apenas os arquivos gerados pela síntese, execute:
 
 ```bash
 make clean_synth
 ```
 
-Para remover os arquivos gerados pelo Formality:
+Para remover apenas os arquivos gerados pelo Formality, execute:
 
 ```bash
 make clean_fm
 ```
+
+Para remover todos os arquivos gerados, execute:
+
+```bash
+make clean
+```
+
+## Alvos disponíveis
+
+| Alvo | Descrição |
+|---|---|
+| `make syntax` | Analisa a sintaxe do RTL e do testbench com o comando `vlogan` |
+| `make compile` | Analisa e elabora o projeto com o VCS |
+| `make run` | Compila e executa a simulação |
+| `make wave` | Abre o arquivo `waves.fsdb` no Verdi |
+| `make synth` | Executa a síntese com período de clock de 6 ns e gera a netlist e o arquivo SVF |
+| `make fm_run` | Executa a verificação de equivalência formal |
+| `make gen_fm` | Gera setup automático para Formality a partir de `default.svf`
+| `make rungui` | Abre a interface gráfica do Formality |
+| `make clean_sim` | Remove os arquivos gerados pela simulação |
+| `make clean_synth` | Remove os arquivos gerados pela síntese |
+| `make clean_fm` | Remove os arquivos gerados pelo Formality |
+| `make clean` | Executa a limpeza completa |
 
 

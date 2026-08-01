@@ -6,9 +6,12 @@
 !relatorio_equivalencia.pdf
 !README.md
 
-# Mantém tudo dentro de rtl, synth e fm
+# Mantém tudo dentro de rtl, sim, synth e fm
 !rtl/
 !rtl/**
+
+!sim/
+!sim/**
 
 !synth/
 !synth/**

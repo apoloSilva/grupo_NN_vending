@@ -2,6 +2,7 @@
 # Diretórios
 # ==========================================
 RTL_DIR   := rtl
+TB_DIR    := sim
 SYNTH_DIR := synth
 FORMAL_DIR := fm
 
@@ -17,11 +18,16 @@ RTL_FILES := \
     $(RTL_DIR)/control_unit.sv \
     $(RTL_DIR)/vending_top.sv
 
+TB_FILES := $(TB_DIR)/tb_vending.sv
+
 # ==========================================
 # Módulos de topo
 # ==========================================
 RTL_TOP := vending_top
+TOP     := tb_vending
 
+# Arquivo de formas de onda gerado pelo testbench
+WAVE_FILE := waves.fsdb
 
 # ==========================================
 # Flags das ferramentas comerciais
@@ -31,11 +37,34 @@ VLOGAN_FLAGS = -full64 \
                -kdb \
                +lint=all
 
+VCS_FLAGS = -full64 \
+            -timescale=$(TIMESCALE) \
+            -debug_access+all \
+            -kdb
+
 # ==========================================
 # Verificação de sintaxe
 # ==========================================
 syntax:
 	vlogan $(VLOGAN_FLAGS) $(RTL_FILES) $(TB_FILES)
+
+# ==========================================
+# Compilação / Elaboração
+# ==========================================
+compile: syntax
+	vcs $(VCS_FLAGS) -top $(TOP)
+
+# ==========================================
+# Simulação
+# ==========================================
+run: compile
+	./simv
+
+# ==========================================
+# Abrir waveform
+# ==========================================
+wave:
+	verdi -ssf $(WAVE_FILE) &
 
 # ==========================================
 # Síntese
@@ -56,6 +85,32 @@ fm_run: clean_fm
 
 rungui:
 	fm_shell -gui
+
+# ==========================================
+# Limpeza da simulação
+# ==========================================
+clean_sim:
+	rm -rf \
+	    csrc \
+	    simv* \
+	    obj_dir \
+	    *.daidir \
+	    novas* \
+	    AN.DB \
+	    ucli.key \
+	    verdi* \
+	    DVEfiles \
+	    .vlogan* \
+	    *.fsdb \
+	    *.fst \
+	    *.vcd \
+	    *.log \
+	    *.out \
+	    *.fls \
+	    *.gz \
+	    *.fdb_latexmk \
+	    *.aux
+
 
 # ==========================================
 # Limpeza da síntese
