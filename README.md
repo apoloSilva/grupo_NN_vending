@@ -14,7 +14,7 @@ O relatório em PDF apresenta mais detalhes sobre a arquitetura, a simulação, 
 
 ```text
 grupo_NN_vending/
-├── relatorio.pdf
+├── relatorio_equivalencia.pdf
 ├── Makefile
 ├── rtl/
 │   ├── vending_pkg.sv
@@ -37,7 +37,7 @@ grupo_NN_vending/
     ├── formality.tcl
     ├── formality_auto.tcl
     └── reports/
-│       └── ...
+        └── ...
 ```
 
 ## Verificação de sintaxe
